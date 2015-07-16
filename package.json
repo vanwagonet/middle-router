@@ -1,0 +1,60 @@
+{
+  "name": "middle-router",
+  "version": "0.0.1",
+  "description": "Route urls on both client and server through middleware",
+  "keywords": [
+    "router",
+    "url",
+    "middleware",
+    "universal",
+    "isomorphic"
+  ],
+  "main": "lib/router.js",
+  "dependencies": {
+    "path-to-regexp": "^1.2.0"
+  },
+  "devDependencies": {
+    "benchmark": "^1.0.0",
+    "chai": "^3.0.0",
+    "istanbul": "^0.3.17",
+    "karma": "^0.12.36",
+    "karma-chai": "^0.1.0",
+    "karma-chrome-launcher": "^0.2.0",
+    "karma-cli": "^0.1.0",
+    "karma-firefox-launcher": "^0.1.4",
+    "karma-mocha": "^0.2.0",
+    "karma-phantomjs-launcher": "^0.2.0",
+    "karma-safari-launcher": "^0.1.1",
+    "karma-sourcemap-loader": "^0.3.5",
+    "karma-webpack": "^1.6.0",
+    "mocha": "^2.2.5",
+    "standard": "^4.5.4",
+    "webpack": "^1.10.1"
+  },
+  "scripts": {
+    "lint": "standard",
+    "prepublish": "webpack -p",
+    "test": "npm run lint && npm run test-node && npm run test-browsers",
+    "test-browsers": "karma start --browsers Firefox,PhantomJS --single-run",
+    "test-node": "istanbul cover _mocha -- -cG --timeout 10000 -R dot test/**/*.server.spec.js"
+  },
+  "standard": {
+    "ignore": [
+      "scripts/benchmark.js",
+      "browser.js"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/thetalecrafter/middle-router.git"
+  },
+  "author": {
+    "name": "Andy VanWagoner",
+    "email": "thetalecrafter@gmail.com"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/thetalecrafter/middle-router/issues"
+  },
+  "homepage": "https://github.com/thetalecrafter/middle-router"
+}
