@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">
+  <defs>
+    <mask id="circles">
+      <rect x="0" y="0" width="128" height="128" fill="white" />
+      <circle cx="64" cy="12" r="14" />
+      <circle cx="64" cy="116" r="14" />
+      <circle cx="102" cy="36" r="14" />
+      <circle cx="26" cy="58" r="14" />
+    </mask>
+  </defs>
+  <g transform="translate(64, 64) rotate(90) translate(-64, -64)">
+    <path
+      stroke="#38798C" stroke-width="8"
+      fill="none"
+      mask="url(#circles)"
+      d="M64 12v92"
+    />
+    <path
+      stroke="#9ACF4E" stroke-width="8"
+      fill="none"
+      mask="url(#circles)"
+      d="M64 112v-32c0-4.4 3.318-9.397 7.373-11.104l23.254-9.791c4.055-1.707 7.373-6.704 7.373-11.104"
+    />
+    <path
+      stroke="#3FA75F" stroke-width="8"
+      fill="none"
+      mask="url(#circles)"
+      d="M64 112v-10c0-4.4-3.318-9.397-7.373-11.104l-23.254-9.791c-4.055-1.707 -7.373-6.704 -7.373-11.104"
+    />
+    <circle fill="#115163" cx="64" cy="12" r="12" />
+    <circle fill="#115163" cx="64" cy="116" r="12" />
+    <circle fill="#5F9314" cx="102" cy="36" r="12" />
+    <circle fill="#10762F" cx="26" cy="58" r="12" />
+  </g>
+</svg>
