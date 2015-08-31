@@ -85,5 +85,34 @@ describe('Router', function () {
       router.route('/foo/bar')
       expect(called).to.eql(1)
     })
+
+    it('passes the state in the context', function () {
+      var called = 0
+      var state = { foo: 'bar' }
+      var router = new Router()
+        .use('/foo/:bar', function (ctx, next) {
+          ++called
+          expect(ctx.state).to.eql(state)
+          next()
+        })
+        .use(function () {})
+      router.route('/foo/bar', state)
+      expect(called).to.eql(1)
+    })
+
+    it('passes parameters to nested routers', function () {
+      var called = 0
+      var router = new Router()
+        .use('/:foo', new Router()
+          .use('/', function (ctx, next) {
+            ++called
+            expect(ctx.params.foo).to.eql('foo')
+            next()
+          })
+        )
+        .use(function () {})
+      router.route('/foo/')
+      expect(called).to.eql(1)
+    })
   })
 })

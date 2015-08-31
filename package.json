@@ -35,7 +35,7 @@
     "lint": "standard",
     "prepublish": "webpack -p",
     "test": "npm run lint && npm run test-node && npm run test-browsers",
-    "test-browsers": "karma start --browsers Firefox,PhantomJS --single-run",
+    "test-browsers": "karma start --browsers Firefox --single-run",
     "test-node": "istanbul cover _mocha -- -cG --timeout 10000 -R dot test/**/*.server.spec.js"
   },
   "standard": {

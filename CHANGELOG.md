@@ -9,6 +9,11 @@
 > - [Internal]
 > - [Polish]
 
+## 0.0.2
+
+* **Bug Fix**
+  * Fixed nested routers on paths with trailing parameters
+
 ## 0.0.1
 
 * **New Feature**
