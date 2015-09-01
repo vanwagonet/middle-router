@@ -134,6 +134,23 @@ describe('Router', function () {
       router.route('/foo/bar/bar')
       expect(called).to.eql(1)
     })
+
+    it('nested router can match parent path even when no trailing slash', function () {
+      var called = 0
+      var router = Router()
+        .use('/:foo', Router()
+          .use('/bar', Router()
+            .use('/', function (ctx, next) {
+              ++called
+              expect(ctx.params.foo).to.eql('foo')
+              next()
+            })
+          )
+        )
+        .use(function () {})
+      router.route('/foo/bar')
+      expect(called).to.eql(1)
+    })
   })
 
   describe('#start', function () {
