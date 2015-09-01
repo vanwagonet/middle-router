@@ -116,6 +116,24 @@ describe('Router', function () {
       router.route('/foo/')
       expect(called).to.eql(1)
     })
+
+    it('routes through arbitrarily deep nested routers', function () {
+      var called = 0
+      var router = Router()
+        .use('/:foo', Router().use(Router().use(Router()
+          .use('/bar/', Router().use(Router()
+            .use('/:baz', function (ctx, next) {
+              ++called
+              expect(ctx.params.foo).to.eql('foo')
+              expect(ctx.params.baz).to.eql('bar')
+              next()
+            })
+          ))
+        )))
+        .use(function () {})
+      router.route('/foo/bar/bar')
+      expect(called).to.eql(1)
+    })
   })
 
   describe('#start', function () {
