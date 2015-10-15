@@ -51,38 +51,62 @@ Router()
 
 
 API
-___
+---
 
 ```typescript
 class Router {
-  // start listening for hashchange/popstate events
-  // also immediately routes the current url
+  /**
+   * Start listening for hashchange/popstate events.
+   * Immediately routes the current url.
+   * @param {Object} [options] - Options for how the router will run.
+   * @param {string|boolean} [options.hash] - true/false to enable/disable hash routing, string to specify a hash prefix like '#!/'.
+   * @param {Function} [options.onRoute] - Called with the route promise each time routing begins. The promise resolves when routing completes.
+   */
   start(options?: Object): Router;
 
-  // stop listening for hashchange/popstate events
+  /**
+   * Stop listening for hashchange/popstate events.
+   */
   stop(): Router;
 
-  // update the current location and run the new route
+  /**
+   * Update the current location and run the new route.
+   * This is similar to location.assign() in terms of history.
+   * @param {string} url - The new url to go to.
+   * @param {Object} [state] - Optional state object to add to the context.
+   */
   go(url: string, state?: Object): void;
 
-  // replace the current location and run the new route
+  /**
+   * Replace the current location and run the new route.
+   * This is similar to location.replace() in terms of history.
+   * @param {string} url - The new url to go replace the existing one.
+   * @param {Object} [state] - Optional state object to add to the context.
+   */
   replace(url: string, state?: Object): void;
 
-  // add the middleware functions to the list
-  // if path is specified, only execute the middleware when the url matches
+  /**
+   * Add the middleware functions to the list.
+   * If path is specified, only execute the middleware when the url matches.
+   * @param {string} [path] - The url path to match.
+   * @param {Function[]} middleware - The middleware functions to execute when routing.
+   */
   use(path?: string, ...middleware: Function[]): Router;
 
-  // alias for use
+  /** alias for use */
   get(path?: string, ...middleware: Function[]): Router;
 
-  // run through the list of middleware with the specified context
-  // if done is passed in, run it at the end of the middleware list
-  run(context?: Object, done?: Function): Promise;
-
-  // run through the middleware for the url
+  /**
+   * Run through the middleware for the url.
+   * This is typically used on the server, and client uses start instead.
+   * @param {string} url - The url to route for.
+   * @param {Object} [state] - Optional state object to add to the context.
+   */
   route(url: string, state?: Object): Promise;
 
-  // get a function to mount the Router as an express middleware
+  /**
+   * Get a function to pass to express that mounts the Router.
+   */
   expressHandler(): Function;
 }
 ```
