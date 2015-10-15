@@ -5,6 +5,7 @@
 * **New Feature**
   * Async middleware and route handling via middle-run
   * Added onRoute option, called with the route promise each time route is invoked
+  * Added expressHandler() to get an express-compatible handler to mount a router
 * **Breaking Change**
   * browser.js is no longer built, consumers are expected to use browserify, webpack, rollup, etc
   * Router#route returns a promise that resolves when complete

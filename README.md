@@ -3,12 +3,12 @@
 > Route urls on both client and server through middleware.
 
 [![npm Version][npm-image]][npm]
-[![Dependency Status][deps-image]][deps]
-[![Dev Dependency Status][dev-deps-image]][dev-deps]
 [![Build Status][build-image]][build]
-
 [![JS Standard Style][style-image]][style]
 [![MIT License][license-image]][LICENSE]
+
+[![Dependency Status][deps-image]][deps]
+[![Dev Dependency Status][dev-deps-image]][dev-deps]
 
 
 Quick Start
@@ -49,6 +49,43 @@ Router()
 
 `middle-router` uses [`path-to-regexp`][path-to-regexp] to match paths, so it should behave much like express 4.x paths.
 
+
+API
+___
+
+```typescript
+class Router {
+  // start listening for hashchange/popstate events
+  // also immediately routes the current url
+  start(options?: Object): Router;
+
+  // stop listening for hashchange/popstate events
+  stop(): Router;
+
+  // update the current location and run the new route
+  go(url: string, state?: Object): void;
+
+  // replace the current location and run the new route
+  replace(url: string, state?: Object): void;
+
+  // add the middleware functions to the list
+  // if path is specified, only execute the middleware when the url matches
+  use(path?: string, ...middleware: Function[]): Router;
+
+  // alias for use
+  get(path?: string, ...middleware: Function[]): Router;
+
+  // run through the list of middleware with the specified context
+  // if done is passed in, run it at the end of the middleware list
+  run(context?: Object, done?: Function): Promise;
+
+  // run through the middleware for the url
+  route(url: string, state?: Object): Promise;
+
+  // get a function to mount the Router as an express middleware
+  expressHandler(): Function;
+}
+```
 
 License
 -------
