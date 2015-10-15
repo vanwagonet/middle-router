@@ -11,37 +11,24 @@
   ],
   "main": "lib/router.js",
   "dependencies": {
+    "middle-run": "^1.0.0-rc2",
     "path-to-regexp": "^1.2.0"
   },
   "devDependencies": {
-    "benchmark": "^1.0.0",
-    "chai": "^3.0.0",
-    "istanbul": "^0.3.17",
-    "karma": "^0.12.36",
-    "karma-chai": "^0.1.0",
-    "karma-chrome-launcher": "^0.2.0",
-    "karma-cli": "^0.1.0",
-    "karma-firefox-launcher": "^0.1.4",
-    "karma-mocha": "^0.2.0",
-    "karma-safari-launcher": "^0.1.1",
-    "karma-sourcemap-loader": "^0.3.5",
-    "karma-webpack": "^1.6.0",
-    "mocha": "^2.2.5",
-    "standard": "^4.5.4",
-    "webpack": "^1.10.1"
+    "babel": "^5.8.23",
+    "babel-runtime": "^5.8.25",
+    "babelify": "^6.3.0",
+    "blue-tape": "^0.1.10",
+    "browser-run": "^2.6.2",
+    "browserify": "^11.2.0",
+    "faucet": "0.0.1",
+    "standard": "^4.5.4"
   },
   "scripts": {
-    "lint": "standard",
-    "prepublish": "webpack -p",
-    "test": "npm run lint && npm run test-node && npm run test-browsers",
-    "test-browsers": "karma start --browsers Firefox --single-run",
-    "test-node": "istanbul cover _mocha -- -cG --timeout 10000 -R dot test/**/*.server.spec.js"
-  },
-  "standard": {
-    "ignore": [
-      "scripts/benchmark.js",
-      "browser.js"
-    ]
+    "lint": "standard lib",
+    "test": "npm run lint && npm run test-server && npm run test-client",
+    "test-server": "babel-node test/server.js | faucet",
+    "test-client": "browserify -t babelify test/client.js | browser-run -b firefox | faucet"
   },
   "repository": {
     "type": "git",

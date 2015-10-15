@@ -1,13 +1,15 @@
 # Changelog
 
-> **Tags:**
-> - [New Feature]
-> - [Bug Fix]
-> - [Spec Compliancy]
-> - [Breaking Change]
-> - [Documentation]
-> - [Internal]
-> - [Polish]
+## 0.1.0
+
+* **New Feature**
+  * Async middleware and route handling via middle-run
+  * Added onRoute option, called with the route promise each time route is invoked
+* **Breaking Change**
+  * browser.js is no longer built, consumers are expected to use browserify, webpack, rollup, etc
+  * Router#route returns a promise that resolves when complete
+  * Router#run returns a promise, and the function is added to the list of middleware run
+  * Routes with a path create a new context with copied properties instead of inheriting from the previous context
 
 ## 0.0.4
 

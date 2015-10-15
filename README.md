@@ -21,13 +21,19 @@ Quick Start
 var Router = require('middle-router')
 
 Router()
-  .use(function (ctx, next) {
-    // general middleware
-    ctx.state.foo // bar
-    next()
+  // simple middleware can be synchronous
+  .use(function (ctx) {
+    ctx.state.foo = 'bar'
+  })
+  // true middleware by awaiting next()
+  .use(async (ctx, next) => {
+    let start = Date.now()
+    await next()
+    // all downstream matching routes/middleware have finished running
+    ctx.state.totalMs = Date.now() - start
   })
   // Route url patterns
-  .get('/page/:id', function (ctx, next) {
+  .get('/page/:id', (ctx) => {
     ctx.path // /page/123
     ctx.params.id // 123
   })
@@ -37,24 +43,11 @@ Router()
       ctx.path // /page
     })
   )
-  // trigger a route (used mostly server side)
+  // trigger a route with optional state (used mostly server side)
   .route(url, { foo: 'bar' })
 ```
 
-`middle-router` uses [`path-to-regexp`][path-to-regexp] to match paths, so it behaves just like express 4.x paths.
-
-
-TODO
-----
-
-- Add a way to directly mount a middle-router in express.
-
-
-Future Ideas
-------------
-
-- Allow use of promises instead of calling `next`.
-- Allow middleware to return (or resolve) a function to be called once the url is handled.
+`middle-router` uses [`path-to-regexp`][path-to-regexp] to match paths, so it should behave much like express 4.x paths.
 
 
 License
