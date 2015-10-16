@@ -20,7 +20,7 @@ Quick Start
 // basic example
 var Router = require('middle-router')
 
-Router()
+var router = Router()
   // simple middleware can be synchronous
   .use(function (ctx) {
     ctx.state.foo = 'bar'
@@ -39,12 +39,19 @@ Router()
   })
   // Routers can be nested
   .get('/section', Router()
-    .get('/page', function (ctx, next) {
+    .get('/page', function (ctx, next, stop) {
       ctx.path // /page
+      ctx.view = <Page />
+      // call stop when ready to prevent further middleware from running
+      stop()
     })
   )
-  // trigger a route with optional state (used mostly server side)
-  .route(url, { foo: 'bar' })
+
+// trigger a route with optional state (used mostly server side)
+router.route(url, { foo: 'bar' })
+
+// listen for url changes and link clicks (client only)
+router.start()
 ```
 
 `middle-router` uses [`path-to-regexp`][path-to-regexp] to match paths, so it should behave much like express 4.x paths.
