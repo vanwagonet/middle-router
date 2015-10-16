@@ -26,7 +26,7 @@
   },
   "scripts": {
     "lint": "standard lib",
-    "test": "npm run lint && npm run test-server && npm run test-client",
+    "test": "npm run lint && npm run test-server",
     "test-server": "babel-node test/server.js | faucet",
     "test-client": "browserify -t babelify test/client.js | browser-run -b firefox | faucet"
   },
