@@ -1,9 +1,10 @@
 language: node_js
 node_js:
-  - "0.10"
-  - "0.12"
-  - "4.0"
-  - "stable"
-before_script:
-  - export DISPLAY=:99.0
-  - sh -e /etc/init.d/xvfb start
+  - '0.10'
+  - '0.12'
+  - '4.0'
+  - stable
+env:
+  global:
+  - secure: uzHCIGrLbSf1a+Rw3pnACEchWgYCkTBcpylw6oPAleTUvJXBVZIgMJJN7qrSlJ7nJF9yILXXyAeYWH7eiZUbWAZh5G0f60y/DjJlZvVvI+otwkpETjTXONenQjfhJH+Z0e5ZGBeBE2FFBF6t15cENgDHruDyDQYt+Qpt2Lh4J9mNnfmtKyxoPMnV4SrPOIJ0RAghNooe+ZeKDBSczWoHzMg5zSdUfKw6FkVRnKDokCmSpILcy+knQtKziFym1m5w7b0zA/YR1mrG2uvYzKJauAxZON70KKe5vXqWCacwi7qN8z0aXSwcjm6uh722BrEwj0MVlhGAgoS64oGbxZ5rmeiW4jeU1oC6j9QTka5iBewEBpeVxc3QcBGP4eVQuhSRojk8fAcVCuBMjSEz0ZhfvDbqLf2Lk0op6r3wVech9cKfm6STCk8+ZzxRfc+jZX5FtHz/zsqqDTLtZtPvDO49Un8dr/HTxkI/UrfrwvbWZrAgwMFenMcvzQmdsjipE9PjRyg2d0mj1n75HPXW2rT1202o/SJwN6cRJ1qiNrWEgVgHau198+FJbNYgb8HrIWF4wf5binYKjPp64FJ27vY6Ol/7MAspxhUGFa6iKXwdlbovsQU/Z+xrGnFCfSaeM2zZp2CXPfpxQHN4DUoFDwW9rCzBvjnFnXLso71zQZQqYW4=
+  - secure: RW8lky/kIFca9cTk7JhM72oj1A19zcCotBt+gj8qXQsZeS1JQ0Mpj9tIu1KFZurdmrL+14ph1yiT47q5GBNTMgQGfOCNI8Zm9L29Gy3u0JLsepLjOV1C38TJ5+2mb+gcWNXxIv1ULupG2iYtV14UpVPCjxsG5NnetY6uErHR3BVBe1wFZCS9rT1jXxjm/yyTfgQbJtxTJko4jkDkhJ+azeVsg1qsHi3DD/Yhy+0IWHWFEO5DOSUbubXwsZOWVipK1S9OPCL3uzbbeT1hbeaYHXN9POsUaiVSE9EW8+tOTNESJnpX+mKwSbJaJN/XjhOZkCFGOIrAF7NiItzGTIyNpX/c9X+AX16y83+36kzW9EAIKiAx60URZGWemMvhBiAprVHK74cjw80qq4EXmwpAlmNozCjpw7akRqevbdEYZ77s0uFGGIzffcX2Yzfk/8aCn1HTa0XQA5qSW1efn2WK+A6WiaZS8TPYeYSdmKxu3YCGJJ4Va8wtsNkG8KueITTX9xiDpDPhykk0IMhLdiz4Rvx8oiTi3KPu4cPexidji1dUM6lKBSB9S1e/xihaZDHxqxn1XCRwofcFPJFHGtnvqDrdquGXnOycFUBFzqNMn3eotHGzy+lIfPPrWsOFUoQH/mhVHZ2n7jGQaxCZ6ocroQxdv/E+pxYZSnOHs/MNJv8=

@@ -1,6 +1,9 @@
 import test from 'blue-tape'
 import Router from '../lib/router'
 
+// run args tests
+import './arguments'
+
 function sleep (time) {
   return new Promise(r => setTimeout(r, time))
 }
@@ -35,7 +38,7 @@ test('Router#use accepts a path as the first arg', async t => {
 })
 
 test('Router#route returns a promise', async t => {
-  let router = new Router().use('/', (c, n, stop) => stop())
+  let router = new Router().use('/', ({ resolve }) => { resolve() })
   let value = router.route('/')
   t.ok(value.then && value.catch, 'route should return a promise')
 })
@@ -56,29 +59,29 @@ test('Router#route logs an error if no route matches', async t => {
 test('Router#route routes through the matching middleware', async t => {
   let called = 0
   let router = new Router()
-    .use('/foo/:bar', (ctx, next) => {
+    .use('/foo/:bar', () => {
       ++called
     })
-    .use('/somewhere/else', (ctx, next, stop) => {
+    .use('/somewhere/else', ({ resolve }) => {
       t.fail('should not run non-matching middleware')
-      stop()
+      resolve()
     })
-    .use((ctx, next, stop) => {
+    .use(({ resolve }) => {
       ++called
-      stop()
+      resolve()
     })
     .use(() => ++called)
   await router.route('/foo/bar')
-  t.equal(called, 2, 'should only be called for matching routes up until stop() is called')
+  t.equal(called, 2, 'should only be called for matching routes up until resolve() is called')
 })
 
 test('Router#route has an object containing all the parameters', async t => {
   let called = 0
   let router = new Router()
-    .use('/foo/:bar', (ctx, next, stop) => {
+    .use('/foo/:bar', ({ params, resolve }) => {
       ++called
-      t.equal(ctx.params.bar, 'bar', 'params should contain the path parameter')
-      stop()
+      t.equal(params.bar, 'bar', 'params should contain the path parameter')
+      resolve()
     })
   await router.route('/foo/bar')
   t.equal(called, 1, 'matching route should be called')
@@ -86,14 +89,14 @@ test('Router#route has an object containing all the parameters', async t => {
 
 test('Router#route passes the state in the context', async t => {
   let called = 0
-  let state = { foo: 'bar' }
+  let ostate = { foo: 'bar' }
   let router = new Router()
-    .use('/foo/:bar', (ctx, next, stop) => {
+    .use('/foo/:bar', ({ state, resolve }) => {
       ++called
-      t.equal(ctx.state, state, 'state should be unaltered in the context')
-      stop()
+      t.equal(state, ostate, 'state should be unaltered in the context')
+      resolve()
     })
-  await router.route('/foo/bar', state)
+  await router.route('/foo/bar', ostate)
   t.equal(called, 1, 'matching route should be called')
 })
 
@@ -101,10 +104,10 @@ test('Router#route passes parameters to nested routers', async t => {
   let called = 0
   let router = new Router()
     .use('/:foo', new Router()
-      .use('/', (ctx, next, stop) => {
+      .use('/', ({ params, resolve }) => {
         ++called
-        t.equal(ctx.params.foo, 'foo', 'parameters should propagate through nested routes')
-        stop()
+        t.equal(params.foo, 'foo', 'parameters should propagate through nested routes')
+        resolve()
       })
     )
   await router.route('/foo/')
@@ -116,11 +119,11 @@ test('Router#route routes through arbitrarily deep nested routers', async t => {
   let router = Router()
     .use('/:foo', Router().use(Router().use(Router()
       .use('/bar', Router().use(Router()
-        .use('/:baz', (ctx, next, stop) => {
+        .use('/:baz', ({ params, resolve }) => {
           ++called
-          t.equal(ctx.params.foo, 'foo', 'param foo should be propagated')
-          t.equal(ctx.params.baz, 'bar', 'param baz should be propagated')
-          stop()
+          t.equal(params.foo, 'foo', 'param foo should be propagated')
+          t.equal(params.baz, 'bar', 'param baz should be propagated')
+          resolve()
         })
       ))
     )))
@@ -133,10 +136,10 @@ test('Router#route nested router can match parent path even when no trailing sla
   let router = Router()
     .use('/:foo', Router()
       .use('/bar', Router()
-        .use('/', (ctx, next, stop) => {
+        .use('/', ({ params, resolve }) => {
           ++called
-          t.equal(ctx.params.foo, 'foo', 'param foo should be propagated')
-          stop()
+          t.equal(params.foo, 'foo', 'param foo should be propagated')
+          resolve()
         })
       )
     )
@@ -147,7 +150,7 @@ test('Router#route nested router can match parent path even when no trailing sla
 test('Router#route routes can be asynchronous', async t => {
   let called = 0
   let router = Router()
-    .use('/', async (ctx, next) => {
+    .use('/', async ({ next }) => {
       await sleep(10)
       t.equal(++called, 1, 'first matching route should happen first')
       await next()
@@ -156,9 +159,9 @@ test('Router#route routes can be asynchronous', async t => {
     .use('/bogus', () => {
       t.fail('should not call a non-matching route')
     })
-    .use('/', Router().use((ctx, next, stop) => {
+    .use('/', Router().use(({ resolve }) => {
       t.equal(++called, 2, 'last matching route should happen second')
-      stop()
+      resolve()
     }))
   await router.route('/')
   t.equal(called, 3, 'matching routes should be called')
