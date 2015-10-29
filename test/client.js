@@ -1,177 +1,27 @@
 import test from 'blue-tape'
 import Router from '../lib/router'
 
-function sleep (time) {
-  return new Promise(r => setTimeout(r, time))
+// run same tests as on server
+import './server'
+
+function once(event) {
+  let resolve
+  window.addEventListener(event, function handle () {
+    window.removeEventListener(event, handle, false)
+    resolve()
+  }, false)
+  return new Promise(r => resolve = r)
 }
-
-test('Router#constructor can be called as a function', async t => {
-  let router = Router()
-  t.ok(router instanceof Router, 'Router() should return an instanceof Router')
-  t.equal(router.hash, false, 'hash should be false by default')
-})
-
-test('Router#constructor can be called as a constructor', async t => {
-  let router = new Router()
-  t.ok(router instanceof Router, 'new Router() should return an instanceof Router')
-  t.equal(router.hash, false, 'hash should be false by default')
-})
-
-test('Router#use returns the router', async t => {
-  let router = new Router()
-  t.equal(router.use(), router, 'use should return the router')
-})
-
-test('Router#use adds each callback to the middleware', async t => {
-  let router = new Router()
-    .use(() => {}, () => {})
-  t.equal(router.middleware.length, 2, 'should have a middleware per callback')
-})
-
-test('Router#use accepts a path as the first arg', async t => {
-  let router = new Router()
-    .use('/form', () => {}, () => {})
-  t.equal(router.middleware.length, 2, 'should have a middleware per callback')
-})
-
-test('Router#route returns a promise', async t => {
-  let router = new Router().use('/', (c, n, stop) => stop())
-  let value = router.route('/')
-  t.ok(value.then && value.catch, 'route should return a promise')
-})
-
-test('Router#route logs an error if no route matches', async t => {
-  let router = new Router()
-  let error = console.error
-  let called
-  console.error = function (err) {
-    t.equal(err, 'no route matches /', 'should match the no route found error')
-    called = true
-  }
-  await router.route('/')
-  t.equal(called, true, 'console.error should be called on unhandled route')
-  console.error = error
-})
-
-test('Router#route routes through the matching middleware', async t => {
-  let called = 0
-  let router = new Router()
-    .use('/foo/:bar', (ctx, next) => {
-      ++called
-    })
-    .use('/somewhere/else', (ctx, next, stop) => {
-      t.fail('should not run non-matching middleware')
-      stop()
-    })
-    .use((ctx, next, stop) => {
-      ++called
-      stop()
-    })
-    .use(() => ++called)
-  await router.route('/foo/bar')
-  t.equal(called, 2, 'should only be called for matching routes up until stop() is called')
-})
-
-test('Router#route has an object containing all the parameters', async t => {
-  let called = 0
-  let router = new Router()
-    .use('/foo/:bar', (ctx, next, stop) => {
-      ++called
-      t.equal(ctx.params.bar, 'bar', 'params should contain the path parameter')
-      stop()
-    })
-  await router.route('/foo/bar')
-  t.equal(called, 1, 'matching route should be called')
-})
-
-test('Router#route passes the state in the context', async t => {
-  let called = 0
-  let state = { foo: 'bar' }
-  let router = new Router()
-    .use('/foo/:bar', (ctx, next, stop) => {
-      ++called
-      t.equal(ctx.state, state, 'state should be unaltered in the context')
-      stop()
-    })
-  await router.route('/foo/bar', state)
-  t.equal(called, 1, 'matching route should be called')
-})
-
-test('Router#route passes parameters to nested routers', async t => {
-  let called = 0
-  let router = new Router()
-    .use('/:foo', new Router()
-      .use('/', (ctx, next, stop) => {
-        ++called
-        t.equal(ctx.params.foo, 'foo', 'parameters should propagate through nested routes')
-        stop()
-      })
-    )
-  await router.route('/foo/')
-  t.equal(called, 1, 'matching route should be called')
-})
-
-test('Router#route routes through arbitrarily deep nested routers', async t => {
-  let called = 0
-  let router = Router()
-    .use('/:foo', Router().use(Router().use(Router()
-      .use('/bar', Router().use(Router()
-        .use('/:baz', (ctx, next, stop) => {
-          ++called
-          t.equal(ctx.params.foo, 'foo', 'param foo should be propagated')
-          t.equal(ctx.params.baz, 'bar', 'param baz should be propagated')
-          stop()
-        })
-      ))
-    )))
-  await router.route('/foo/bar/bar')
-  t.equal(called, 1, 'matching route should be called')
-})
-
-test('Router#route nested router can match parent path even when no trailing slash', async t => {
-  let called = 0
-  let router = Router()
-    .use('/:foo', Router()
-      .use('/bar', Router()
-        .use('/', (ctx, next, stop) => {
-          ++called
-          t.equal(ctx.params.foo, 'foo', 'param foo should be propagated')
-          stop()
-        })
-      )
-    )
-  await router.route('/foo/bar')
-  t.equal(called, 1, 'matching route should be called')
-})
-
-test('Router#route routes can be asynchronous', async t => {
-  let called = 0
-  let router = Router()
-    .use('/', async (ctx, next) => {
-      await sleep(10)
-      t.equal(++called, 1, 'first matching route should happen first')
-      await next()
-      t.equal(++called, 3, 'after next should happen last')
-    })
-    .use('/bogus', () => {
-      t.fail('should not call a non-matching route')
-    })
-    .use('/', Router().use((ctx, next, stop) => {
-      t.equal(++called, 2, 'last matching route should happen second')
-      stop()
-    }))
-  await router.route('/')
-  t.equal(called, 3, 'matching routes should be called')
-})
 
 test('Router#start using push/pop stateroutes from the current location.pathname', async t => {
   let routing
   let called = 0
-  let router = new Router({ onRoute(p) { routing = p } })
-    .use('/foo/:bar', (ctx, next, stop) => {
+  let router = new Router()
+    .on('route', (args, promise) => { routing = promise })
+    .use('/foo/:bar', ({ params, resolve }) => {
       ++called
-      t.equal(ctx.params.bar, 'bar', 'param bar should be set')
-      stop()
+      t.equal(params.bar, 'bar', 'param bar should be set')
+      resolve()
     })
 
   history.replaceState(null, document.title, '/foo/bar')
@@ -183,31 +33,35 @@ test('Router#start using push/pop stateroutes from the current location.pathname
 test('Router#start listens to popstate events', async t => {
   let routing
   let called = 0
-  let router = new Router({ onRoute(p) { routing = p } })
-    .use('/foo/:bar', ctx => {
+  let router = new Router()
+    .on('route', (args, promise) => { routing = promise })
+    .use('/foo/:bar', ({ params }) => {
       ++called
-      t.equal(ctx.params.bar, 'bas', 'param bar should be set')
+      t.equal(params.bar, 'bas', 'param bar should be set')
     })
-    .use((ctx, next, stop) => stop())
+    .use(({ resolve }) => { resolve() })
 
   history.replaceState(null, document.title, '/foo/bas')
   router.start() // called 1
   await routing
 
-  history.pushState(null, document.title, '/') // not called
-  await sleep(10) // give time for popstate event to fire
+  history.pushState(null, document.title, '/') // doesn't trigger an event
+  router.route(location.href) // not called
   await routing
 
+  let eventing = once('popstate')
   history.back() // called 2
-  await sleep(10)
+  await eventing
   await routing
 
+  eventing = once('popstate')
   history.forward() // not called
-  await sleep(10)
+  await eventing
   await routing
 
+  eventing = once('popstate')
   history.back() // called 3
-  await sleep(10)
+  await eventing
   await routing
 
   router.stop()
@@ -217,11 +71,12 @@ test('Router#start listens to popstate events', async t => {
 test('Router#start routes from the current location.hash', async t => {
   let routing
   let called = 0
-  let router = new Router({ hash: true, onRoute(p) { routing = p } })
-    .use('/foo/:bar', (ctx, next, stop) => {
+  let router = new Router({ hash: true })
+    .on('route', (args, promise) => { routing = promise })
+    .use('/foo/:bar', ({ params, resolve }) => {
       ++called
-      t.equal(ctx.params.bar, 'bat', 'param bar should be set')
-      stop()
+      t.equal(params.bar, 'bat', 'param bar should be set')
+      resolve()
     })
 
   location.hash = '#/foo/bat'
@@ -233,65 +88,71 @@ test('Router#start routes from the current location.hash', async t => {
 test('Router#start listens to hashchange events', async t => {
   let routing
   let called = 0
-  let router = new Router({ hash: true, onRoute(p) { routing = p } })
-    .use('/foo/:bar', ctx => {
+  let router = new Router({ hash: true })
+    .on('route', (args, promise) => { routing = promise })
+    .use('/foo/:bar', ({ params }) => {
       ++called
-      t.equal(ctx.params.bar, 'bax', 'param bar should be set')
+      t.equal(params.bar, 'bax', 'param bar should be set')
     })
-    .use((ctx, next, stop) => stop())
+    .use(({ resolve }) => { resolve() })
 
+  let eventing = once('hashchange')
   location.hash = '#/foo/bax'
+  await eventing
   router.start() // called 1
   await routing
 
+  eventing = once('hashchange')
   location.hash = '#/' // not called
-  await sleep(10) // give time for hashchange event to fire
+  await eventing // give time for hashchange event to fire
   await routing
 
+  eventing = once('hashchange')
   history.back() // called 2
-  await sleep(10)
+  await eventing
   await routing
 
+  eventing = once('hashchange')
   history.forward() // not called
-  await sleep(10)
+  await eventing
   await routing
 
+  eventing = once('hashchange')
   history.back() // called 3
-  await sleep(10)
+  await eventing
   await routing
 
   router.stop()
   t.equal(called, 3, 'matching route should be called for each matching location')
 })
 
-test('Router#routeFromLocation routes from the current location.pathname', async t => {
+test('middleware has an exiting promise when listening', async t => {
   let routing
-  let called = 0
-  let router = new Router({ onRoute(p) { routing = p } })
-    .use('/foo/:bar', (ctx, next, stop) => {
-      ++called
-      t.equal(ctx.params.bar, 'baz', 'param bar should be set')
-      stop()
+  let stage = 'before'
+  let router = Router({ hash: true })
+    .on('route', (args, p) => { routing = p })
+    .use('/', async ({ exiting, next, resolve }) => {
+      t.ok(exiting instanceof Promise, 'exiting must be a promise when listening')
+      await next()
+      stage = 'resolved'
+      resolve() // call resolve or this will wait indefinitely
+      await exiting
+      stage = 'after'
     })
+    .use(({ resolve }) => { resolve() })
 
-  history.replaceState(null, document.title, '/foo/baz')
-  router.routeFromLocation()
+  let eventing = once('hashchange')
+  location.hash = '#/'
+  await eventing
+
+  router.start()
+  t.equal(stage, 'before', 'before route promise completes, exiting must not be resolved')
+
   await routing
-  t.equal(called, 1, 'matching route should be called')
-})
+  t.equal(stage, 'resolved', 'after route promise completes, exiting must not be resolved')
 
-test('Router#routeFromLocation routes from the current location.hash', async t => {
-  let routing
-  let called = 0
-  let router = new Router({ hash: true, onRoute(p) { routing = p } })
-    .use('/foo/:bar', (ctx, next, stop) => {
-      ++called
-      t.equal(ctx.params.bar, 'bay', 'param bar should be set')
-      stop()
-    })
-
-  location.hash = '#/foo/bay'
-  router.routeFromLocation()
-  await routing
-  t.equal(called, 1, 'matching route should be called')
+  eventing = once('hashchange')
+  location.hash = '#/nowhere'
+  await eventing
+  t.equal(stage, 'after', 'after next route, exiting must be resolved')
 })
