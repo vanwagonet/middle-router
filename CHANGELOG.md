@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.2.0
+
+* **New Feature**
+  * Added a `location` object passed to middleware
+  * Made routers event emitters and added a `'route'` event
+  * Added an `exiting` promise passed to middleware
+* **Breaking Change**
+  * Removed `onRoute` option in `Route` constructor
+  * Removed automatic fallback to hash routing when `pushState` is not supported
+  * Renamed `go` to `navigate`
+
 ## 0.1.0
 
 * **New Feature**
