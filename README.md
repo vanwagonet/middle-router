@@ -179,7 +179,7 @@ The url path to match.
 #### ...middleware
 
 The middleware functions to execute when routing. More on the signature of these function is documented below.
-Router objects can also be passed as middleware
+Router objects can also be passed as middleware.
 
 ### Router#get(path: ?string, ...middleware: Function[]): Router
 

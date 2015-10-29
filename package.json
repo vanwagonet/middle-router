@@ -12,7 +12,7 @@
   "main": "lib/router.js",
   "dependencies": {
     "eventemitter3": "^1.1.1",
-    "middle-run": "^2.0.0-rc1",
+    "middle-run": "^2.0.0",
     "path-to-regexp": "^1.2.0"
   },
   "devDependencies": {
@@ -21,7 +21,7 @@
     "babel-runtime": "^5.8.25",
     "babelify": "^6.3.0",
     "blue-tape": "^0.1.10",
-    "browserify": "^11.2.0",
+    "browserify": "^12.0.1",
     "faucet": "^0.0.1",
     "karma": "^0.13.14",
     "karma-browserify": "^4.4.0",
@@ -30,7 +30,7 @@
     "karma-tap": "^1.0.3",
     "karma-tap-reporter": "0.0.4",
     "phantomjs": "^1.9.18",
-    "standard": "^4.5.4"
+    "standard": "^5.3.1"
   },
   "scripts": {
     "lint": "standard lib",
