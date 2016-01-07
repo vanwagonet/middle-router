@@ -1,6 +1,6 @@
 {
   "name": "middle-router",
-  "version": "0.2.0",
+  "version": "1.0.0",
   "description": "Route urls on both client and server through middleware",
   "keywords": [
     "router",
