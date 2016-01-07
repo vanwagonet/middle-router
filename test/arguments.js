@@ -35,22 +35,6 @@ test('middleware path is the pathname', async t => {
   await router.route('/path/route#/hash')
 })
 
-test('middleware path is the hash if hash routing enabled', async t => {
-  let router = Router({ hash: '#$!' })
-    .use('/path', () => {
-      t.fail('must not match from pathname when hash routing')
-    })
-    .use(({ path }) => {
-      t.equal(path, '/hash/route', 'path must be from hash')
-    })
-    .use('/hash', Router().use(({ path, location, resolve }) => {
-      t.equal(path, '/route', 'path is relative to mount point')
-      t.equal(location.hash, '#$!/hash/route', 'hash is unchanged by mounting')
-      resolve()
-    }))
-  await router.route('/path#$!/hash/route')
-})
-
 test('middleware has no exiting promise when not listening', async t => {
   let router = Router()
     .use(({ exiting, resolve }) => {
