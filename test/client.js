@@ -156,3 +156,24 @@ test('middleware has an exiting promise when listening', async t => {
   await eventing
   t.equal(stage, 'after', 'after next route, exiting must be resolved')
 })
+
+test('Support hash routes with pseudo query params', async t => {
+  let routing
+  let called = 0
+  let router = new Router({ hash: true })
+    .on('route', (args, promise) => { routing = promise })
+    .use('/login', ({ params }) => {
+      ++called
+      // t.equal(params.foo, 'bar', 'param bar should be set')
+    })
+    .use(({ resolve }) => { resolve() })
+
+  let eventing = once('hashchange')
+  location.hash = '#/login?foo=bar'
+  await eventing
+  router.start() // called 1
+  await routing
+
+  router.stop()
+  t.equal(called, 1, 'matching route should be called')
+})
