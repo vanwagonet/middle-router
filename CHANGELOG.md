@@ -1,5 +1,17 @@
 # Changelog
 
+## 1.0.2
+
+* **Bug Fix**
+  * Removed unnecessary link intercepting when using hash routing
+  * Fixed bad routing of link clicks that had default prevented
+
+## 1.0.0
+
+* **Bug Fix**
+  * Fixed hash routing query parameters
+  * Improved hash routing support
+
 ## 0.2.0
 
 * **New Feature**
