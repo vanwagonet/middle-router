@@ -3,8 +3,9 @@ import Router from '../lib/router'
 
 // run same tests as on server
 import './server'
+import './links'
 
-function once(event) {
+function once (event) {
   let resolve
   window.addEventListener(event, function handle () {
     window.removeEventListener(event, handle, false)
