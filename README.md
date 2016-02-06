@@ -4,11 +4,9 @@
 
 [![npm Version][npm-image]][npm]
 [![Build Status][build-image]][build]
+
 [![JS Standard Style][style-image]][style]
 [![MIT License][license-image]][LICENSE]
-
-[![Dependency Status][deps-image]][deps]
-[![Dev Dependency Status][dev-deps-image]][dev-deps]
 
 middle-router is a universal front-end router that routes urls through a series of async middleware functions. This allows you to perform multiple tasks when the url changes, instead of just updating the view.
 
