@@ -81,7 +81,7 @@ module.exports = function(config) {
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
     browsers: process.env.CONTINUOUS_INTEGRATION && process.env.TRAVIS_NODE_VERSION === 'stable'
       ? Object.keys(customLaunchers)
-      : [ 'PhantomJS' ],
+      : [ 'Firefox' ],
 
     customLaunchers: customLaunchers,
     sauceLabs: {
