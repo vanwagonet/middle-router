@@ -16,6 +16,7 @@
     "path-to-regexp": "^1.2.0"
   },
   "devDependencies": {
+    "babel-cli": "^6.4.5",
     "babel-core": "^6.4.5",
     "babel-plugin-transform-runtime": "^6.4.3",
     "babel-polyfill": "^6.3.14",
