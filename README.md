@@ -95,7 +95,15 @@ router = new Router()
 
 Defaults to `false`, meaning routing will be based on `location.pathname`.
 If `true`, enables routing based on `location.hash`.
-If a string value begining with `'#'`, the string prefix will be ignored when routing.
+If a string value beginning with `'#'`, the string prefix will be ignored when routing.
+
+### Router#routing: ?Promise
+
+```js
+await router.routing
+```
+
+The same promise returned by `route()`, representing the current routing flow. This is `null` when there is no currently running flow.
 
 ### Router#start(options: ?Object): Router
 

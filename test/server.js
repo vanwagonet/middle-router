@@ -12,12 +12,14 @@ test('Router#constructor can be called as a function', async t => {
   let router = Router()
   t.ok(router instanceof Router, 'Router() should return an instanceof Router')
   t.equal(router.hash, false, 'hash should be false by default')
+  t.equal(router.routing, null, 'routing should be null by default')
 })
 
 test('Router#constructor can be called as a constructor', async t => {
   let router = new Router()
   t.ok(router instanceof Router, 'new Router() should return an instanceof Router')
   t.equal(router.hash, false, 'hash should be false by default')
+  t.equal(router.routing, null, 'routing should be null by default')
 })
 
 test('Router#use returns the router', async t => {
@@ -41,6 +43,9 @@ test('Router#route returns a promise', async t => {
   let router = new Router().use('/', ({ resolve }) => { resolve() })
   let value = router.route('/')
   t.ok(value.then && value.catch, 'route should return a promise')
+  t.equal(router.routing, value, 'routing should be the same promise returned by route()')
+  await value
+  t.equal(router.routing, null, 'routing should be null after finished')
 })
 
 test('Router#route logs an error if no route matches', async t => {
