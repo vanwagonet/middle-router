@@ -40,6 +40,12 @@ let router = Router()
     path // /page/123
     params.id // 123
   })
+  // beforeExit registration
+  .get('/form', ({ beforeExit }) => {
+    beforeExit(event => {
+      if (isFormDirty) return 'Are you sure you want to leave?'
+    })
+  })
   // Routers can be nested
   .get('/section', Router()
     .get('/page', async ({ path, resolve, exiting }) => {
@@ -114,6 +120,12 @@ Start listening for hashchange/popstate events, and optionally link click events
 #### options.routeLinks
 
 Defaults to `false`, meaning link clicks are not handled. If `true`, link clicks will trigger a call to `navigate` with the link's `href`.
+
+#### options.confirm
+
+Defaults to `window.confirm`. A function that takes a confirm message string returns a boolean. The function is called to confirm if a `beforeExit` handler prevents default, or returns a confirmation message. A `true` returned from this function means that navigation will continue. A `false` means the user stays.
+
+It is recommended that you use a custom function that calls `window.confirm` with a static localized message, and your `beforeExit` handlers just call `event.preventDefault()`.
 
 ### Router#stop(): Router
 
@@ -271,6 +283,12 @@ Path parameters specified with a `:` in the `use(path)` are added to the `params
 #### state
 
 `state` is an object intended to mirror the state object given to `history.pushState` and recieved from `history.onpopstate`.
+
+#### beforeExit
+
+Call `beforeExit` with a callback function. The function will handle `beforeunload` events on the window, and `beforeexit` events on the router. To prompt users to confirm before leaving, either call `event.preventDefault()`, set `event.returnValue` to a string, or return a string. See [MDN documentation](https://developer.mozilla.org/en-US/docs/Web/Events/beforeunload) on cross-browser handling of `beforeunload`.
+
+Note that handlers registered with `beforeExit` are automatically removed when the user completes navigation. This can be either because no handler prevented the navigation, or the user confirmed the navigation.
 
 #### exiting
 
