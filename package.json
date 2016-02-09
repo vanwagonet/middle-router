@@ -38,7 +38,7 @@
     "synthetic-dom-events": "^0.3.0"
   },
   "scripts": {
-    "lint": "standard lib",
+    "lint": "standard 'lib/**/*.js'",
     "test": "npm run lint && npm run test-server && npm run test-client",
     "test-server": "mocha -r babel-register test/server.js",
     "test-client": "karma start"

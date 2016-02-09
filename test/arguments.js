@@ -45,4 +45,13 @@ describe('Route middleware arguments', () => {
       })
     await router.route('/')
   })
+
+  it('has a beforeExit function', async () => {
+    let router = Router()
+      .use(({ beforeExit, resolve }) => {
+        assert.equal(typeof beforeExit, 'function', 'beforeExit must be a function')
+        resolve()
+      })
+    await router.route('/')
+  })
 })
