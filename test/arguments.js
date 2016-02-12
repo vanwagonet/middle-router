@@ -45,4 +45,13 @@ describe('Route middleware arguments', () => {
       })
     await router.route('/')
   })
+
+  it('has router pointing to the top-level router', async () => {
+    let topRouter = Router()
+      .use(Router().use(({ router, resolve }) => {
+        assert.equal(router, topRouter, 'router must be the top-level router')
+        resolve()
+      }))
+    await topRouter.route('/')
+  })
 })
