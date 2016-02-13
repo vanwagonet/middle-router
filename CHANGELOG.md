@@ -1,5 +1,18 @@
 # Changelog
 
+## 1.1.0
+
+* **New Feature**
+  * Added `router` to middleware args object, pointing to top-level Router instance
+  * Added `routing` promise to top-level Router while running
+* **Bug Fix**
+  * Define properties like classes do, so they can be overwritten
+  * Bind private `handleEvent` method to work around a jsdom bug
+* **Internal**
+  * Switch testing to mocha and power-assert
+  * Use Firefox instead of PhantomJS for local testing
+  * Drop node 0.10 in automated testing
+
 ## 1.0.2
 
 * **Bug Fix**
@@ -44,4 +57,3 @@
 
 * **New Feature**
   * Middleware-based universal url routing
-
