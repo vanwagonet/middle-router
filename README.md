@@ -23,7 +23,7 @@ This example resolves to a React element, and then renders it. You do not need t
 // basic example
 import Router from 'middle-router'
 
-let router = Router()
+let router = Router({ routeLinks: true })
   // simple middleware can be synchronous
   .use(function (step) {
     step.context.foo = 'bar' // context carries on to each subsequent function
@@ -57,7 +57,7 @@ let router = Router()
     })
   )
 
-// trigger a route with optional state (used mostly server side)
+// trigger a route either on client or server with optional state
 let routing = router.route(url, { foo: 'bar' })
 let view = await routing
 ReactDOMServer.renderToString(view)
@@ -66,11 +66,15 @@ ReactDOMServer.renderToString(view)
 router
   // render the view each time the url changes
   .on('route', async (args, routing) => {
-    let view = await routing
-    ReactDOM.render(view, document.getElementById('view'))
+    try {
+      let view = await routing
+      ReactDOM.render(view, document.getElementById('view'))
+    } catch (error) {
+      ReactDOM.render(<Error error={error}/>, document.getElementById('view'))
+    }
   })
   // listen for url changes and link clicks (client only)
-  .start({ routeLinks: true })
+  .start()
 ```
 
 
@@ -95,6 +99,10 @@ Defaults to `false`, meaning routing will be based on `location.pathname`.
 If `true`, enables routing based on `location.hash`.
 If a string value beginning with `'#'`, the string prefix will be ignored when routing.
 
+#### options.routeLinks
+
+Defaults to `true`.. If `true`, link clicks will trigger a call to `navigate` with the link's `href`.
+
 ### Router#routing: ?Promise
 
 ```js
@@ -103,34 +111,29 @@ await router.routing
 
 The same promise returned by `route()`, representing the current routing flow. This is `null` when there is no currently running flow.
 
-### Router#start(options: ?Object): Router
+### Router#start(options: ?Object): Promise
 
 ```js
-router.start({ routeLinks: true })
+await router.start()
 ```
 
-Start listening for hashchange/popstate events, and optionally link click events. Immediately routes the current url.
+Start listening for hashchange/popstate events, and optionally link click events. Immediately routes the current url and returns the `routing` promise.
 
-#### options.routeLinks
-
-Defaults to `false`, meaning link clicks are not handled. If `true`, link clicks will trigger a call to `navigate` with the link's `href`.
-
-### Router#stop(): Router
+### Router#stop(): ?Promise
 
 ```js
 router.stop()
 ```
 
-Stop listening for hashchange/popstate and link click events.
+Stop listening for hashchange/popstate and link click events. Returns the `routing` promise, if currently routing.
 
-### Router#navigate(url: string, state: ?Object): Router
+### Router#navigate(url: string, state: ?Object, title: ?string): Promise
 
 ```js
-router.navigate('/new/path/to/glory')
+await router.navigate('/new/path/to/glory')
 ```
 
-Update the current location and run the new route.
-This is similar to `window.location.assign()` in terms of history.
+Update the current location and run the new route. This is similar to `window.location.assign()` in terms of history. A promise is returned that resolves when the navigation and subsequent routing is complete.
 
 #### url
 
@@ -140,14 +143,17 @@ The new url to navigate to.
 
 Optional state object to add to the middleware argument object.
 
-### Router#replace(url: string, state: ?Object): Router
+#### title
+
+Optional title to update `document.title` with.
+
+### Router#replace(url: string, state: ?Object, title: ?string): void
 
 ```js
 router.replace('/where/you/belong')
 ```
 
-Replace the current location and run the new route.
-This is similar to `window.location.replace()` in terms of history.
+Replace the current location. This is similar to `window.location.replace()` in terms of history. No routing is done.
 
 #### url
 
@@ -156,6 +162,26 @@ The new url to replace the current with.
 #### state
 
 Optional state object to add to the middleware argument object.
+
+#### title
+
+Optional title to update `document.title` with.
+
+### Router#back(): Promise
+
+```js
+await router.back()
+```
+
+Go back one page and run the updated route. This calls `window.history.back()`. A promise is returned that resolves when the navigation and subsequent routing is complete.
+
+### Router#forward(): Promise
+
+```js
+await router.forward()
+```
+
+Go forward one page and run the updated route. This calls `window.history.forward()`. A promise is returned that resolves when the navigation and subsequent routing is complete.
 
 ### Router#use(path: ?string, ...middleware: Function[]): Router
 
@@ -186,10 +212,6 @@ The url path to match.
 
 The middleware functions to execute when routing. More on the signature of these function is documented below.
 Router objects can also be passed as middleware.
-
-### Router#get(path: ?string, ...middleware: Function[]): Router
-
-Alias for use.
 
 ### Router#route(url: string, state: ?Object): Promise
 
@@ -282,7 +304,7 @@ To perform cleanup immediately on server, and when the route exits on client, yo
 Async Middleware
 ----------------
 
-middle-router can work with any promised-based async middleware, but it was designed specifically for ES7 async functions. Inspired by [koa][koa]'s `yield next`, middle-router allows you to `await next()` so you can `next()` "downstream" and the `await` for control to flow back "upstream".
+middle-router can work with any promised-based async middleware, but it was designed specifically for async functions. Inspired by [koa][koa]'s `yield next`, middle-router allows you to `await next()` so you can `next()` "downstream" and the `await` for control to flow back "upstream".
 
 
 License
@@ -294,10 +316,6 @@ This software is free to use under the MIT license. See the [LICENSE-MIT file][L
 [logo]: https://cdn.rawgit.com/thetalecrafter/middle-router/612c9e9/logo.svg
 [npm]: https://www.npmjs.org/package/middle-router
 [npm-image]: https://img.shields.io/npm/v/middle-router.svg
-[deps]: https://david-dm.org/thetalecrafter/middle-router
-[deps-image]: https://img.shields.io/david/thetalecrafter/middle-router.svg
-[dev-deps]: https://david-dm.org/thetalecrafter/middle-router#info=devDependencies
-[dev-deps-image]: https://img.shields.io/david/dev/thetalecrafter/middle-router.svg
 [build]: https://travis-ci.org/thetalecrafter/middle-router
 [build-image]: https://img.shields.io/travis/thetalecrafter/middle-router.svg
 [style]: https://github.com/feross/standard

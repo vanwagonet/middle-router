@@ -1,5 +1,22 @@
 # Changelog
 
+## 2.0.0
+
+* **New Feature**
+  * Added `back` and `forward` methods for easy history manipulation
+  * Added `beforeroute` event for manipulating the middleware arguments, so `route` event handlers can can assume the arguments are complete
+* **Breaking Change**
+  * Moved `routeLinks` option from `start` method to `Router` construction
+  * Changed `routeLinks` to default to `true`, you must pass `routeLinks: false` to disable
+  * Changed `start` and `stop` to return current `routing` promise
+  * Removed redundant `get` method
+  * Changes `navigate` to return a promise that resolves when finished routing the new path
+  * Changed `replace` to return undefined, since no routing is performed
+* **Internal**
+  * Moved all event listening / client-only code to history.js
+  * Drop testing IE10
+  * Add testing Safari 8 & 9
+
 ## 1.1.0
 
 * **New Feature**

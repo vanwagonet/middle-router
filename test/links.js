@@ -3,28 +3,20 @@ import assert from 'power-assert'
 import Router from '../lib/router'
 import event from 'synthetic-dom-events'
 
-function once (event) {
-  let resolve
-  function handle () {
-    window.removeEventListener(event, handle, false)
-    window.document.removeEventListener(event, handle, false)
-    resolve()
+function clickTo (url, prevent) {
+  let link = document.body.appendChild(document.createElement('a'))
+  link.href = url
+  if (prevent) {
+    link.addEventListener('click', evt => evt.preventDefault())
   }
-  window.addEventListener(event, handle, false)
-  window.document.addEventListener(event, handle, false)
-  return new Promise(r => resolve = r)
+  link.dispatchEvent(event('click', { bubbles: true, cancelable: true }))
+  document.body.removeChild(link)
 }
 
-function click (node) {
-  node.dispatchEvent(event('click', { bubbles: true, cancelable: true }))
-}
-
-describe('Router#start', () => {
+describe('Router#routeLinks', () => {
   it('ignores prevented link clicks', async () => {
-    let routing
     let called = 0
-    let router = new Router()
-      .on('route', (args, promise) => { routing = promise })
+    let router = new Router({ routeLinks: true })
       .use('/start', ({ resolve }) => resolve())
       .use('/linked/:to', ({ params, resolve }) => {
         ++called
@@ -33,27 +25,18 @@ describe('Router#start', () => {
       })
 
     history.replaceState(null, document.title, '/start')
-    router.start({ routeLinks: true })
-    await routing
+    await router.start()
 
-    let clicking = once('click')
-    let link = document.body.appendChild(document.createElement('a'))
-    link.href = '/linked/location'
-    link.addEventListener('click', evt => evt.preventDefault())
-    click(link)
-    await clicking
-    await routing
+    clickTo('/linked/location', true)
+    await router.routing
 
-    document.body.removeChild(link)
     router.stop()
     assert.equal(called, 0, 'matching route should not be called')
   })
 
   it('listens to link clicks if routeLinks is true', async () => {
-    let routing
     let called = 0
-    let router = new Router()
-      .on('route', (args, promise) => { routing = promise })
+    let router = new Router({ routeLinks: true })
       .use('/start', ({ resolve }) => resolve())
       .use('/linked/:to', ({ params, resolve }) => {
         ++called
@@ -62,18 +45,11 @@ describe('Router#start', () => {
       })
 
     history.replaceState(null, document.title, '/start')
-    router.start({ routeLinks: true })
-    await routing
+    await router.start()
 
-    let clicking = once('click')
-    let link = document.createElement('a')
-    link.href = '/linked/location'
-    document.body.appendChild(link)
-    click(link)
-    await clicking
-    await routing
+    clickTo('/linked/location')
+    await router.routing
 
-    document.body.removeChild(link)
     router.stop()
     assert.equal(called, 1, 'matching route should be called')
   })
