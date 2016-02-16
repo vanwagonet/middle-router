@@ -23,7 +23,7 @@ This example resolves to a React element, and then renders it. You do not need t
 // basic example
 import Router from 'middle-router'
 
-let router = Router({ routeLinks: true })
+let router = Router()
   // simple middleware can be synchronous
   .use(function (step) {
     step.context.foo = 'bar' // context carries on to each subsequent function
@@ -35,12 +35,18 @@ let router = Router({ routeLinks: true })
     // all downstream matching routes/middleware have finished running
     context.totalMs = Date.now() - start
   })
-  // Route url patterns
+  // route url patterns
   .get('/page/:id', ({ path, params }) => {
     path // /page/123
     params.id // 123
   })
-  // Routers can be nested
+  // beforeExit registration
+  .get('/form', ({ beforeExit }) => {
+    beforeExit(event => {
+      if (isFormDirty) return 'Are you sure you want to leave?'
+    })
+  })
+  // routers can be nested
   .get('/section', Router()
     .get('/page', async ({ path, resolve, exiting }) => {
       path // '/page'
@@ -101,7 +107,13 @@ If a string value beginning with `'#'`, the string prefix will be ignored when r
 
 #### options.routeLinks
 
-Defaults to `true`.. If `true`, link clicks will trigger a call to `navigate` with the link's `href`.
+Defaults to `true`. If `true`, link clicks will trigger a call to `navigate` with the link's `href` once you have called `start()`.
+
+#### options.confirm
+
+Defaults to `window.confirm`. A function that takes a confirm message string returns a boolean. The function is called to confirm if a `beforeExit` handler prevents default, or returns a confirmation message. A `true` returned from this function means that navigation will continue. A `false` means the user stays.
+
+It is recommended that you use a custom function that calls `window.confirm` with a static localized message, and your `beforeExit` handlers just call `event.preventDefault()`.
 
 ### Router#routing: ?Promise
 
@@ -293,6 +305,12 @@ Path parameters specified with a `:` in the `use(path)` are added to the `params
 #### state
 
 `state` is an object intended to mirror the state object given to `history.pushState` and recieved from `history.onpopstate`.
+
+#### beforeExit
+
+Call `beforeExit` with a callback function. The function will handle `beforeunload` events on the window, and `beforeexit` events on the router. To prompt users to confirm before leaving, either call `event.preventDefault()`, set `event.returnValue` to a string, or return a string. See [MDN documentation](https://developer.mozilla.org/en-US/docs/Web/Events/beforeunload) on cross-browser handling of `beforeunload`.
+
+Note that handlers registered with `beforeExit` are automatically removed when the user completes navigation. This can be either because no handler prevented the navigation, or the user confirmed the navigation.
 
 #### exiting
 
