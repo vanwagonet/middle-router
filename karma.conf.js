@@ -3,6 +3,7 @@
 
 module.exports = function(config) {
   var customLaunchers = {
+/*
     sl_safari_8: {
       base: 'SauceLabs',
       browserName: 'safari',
@@ -13,6 +14,7 @@ module.exports = function(config) {
       browserName: 'safari',
       version: '9'
     },
+*/
     sl_chrome: {
       base: 'SauceLabs',
       browserName: 'chrome'
