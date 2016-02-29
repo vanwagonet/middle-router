@@ -75,6 +75,25 @@ describe('Router#routeLinks', () => {
     assert.equal(called, 0, 'matching route should not be called')
   })
 
+  it('ignores links that have a rel attribute', async () => {
+    let called = 0
+    let router = new Router({ routeLinks: true })
+      .use('/start', ({ resolve }) => resolve())
+      .use('/linked/:to', ({ params, resolve }) => {
+        ++called
+        assert.fail('should not route due to target attribute')
+      })
+
+    history.replaceState(null, document.title, '/start')
+    await router.start()
+
+    clickTo('#/linked/location', false, { rel: 'external' })
+    await router.routing
+
+    router.stop()
+    assert.equal(called, 0, 'matching route should not be called')
+  })
+
   it('listens to link clicks if routeLinks is true', async () => {
     let called = 0
     let router = new Router({ routeLinks: true })
