@@ -54,6 +54,32 @@ describe('Router#routeLinks', () => {
     assert.equal(called, 1, 'matching route should be called')
   })
 
+  it('correctly identifies the link href', async () => {
+    let called = 0
+    let router = new Router({ routeLinks: true })
+      .use('/start', ({ resolve }) => resolve())
+      .use('/linked/:to', ({ params, resolve }) => {
+        ++called
+        assert.equal(params.to, 'location', 'param to should be set')
+        resolve()
+      })
+
+    history.replaceState(null, document.title, '/start')
+    await router.start()
+
+    let link = document.body.appendChild(document.createElement('a'))
+    link.href = '/linked/location'
+    let img = document.createElement('img')
+    img.src = 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=='
+    link.appendChild(img)
+    img.dispatchEvent(event('click', { bubbles: true, cancelable: true }))
+    document.body.removeChild(link)
+    await router.routing
+
+    router.stop()
+    assert.equal(called, 1, 'matching route should be called')
+  })
+
   it('triggers beforeExit handlers on link clicks', async () => {
     let called = 0
     let beforeExitCalled = 0

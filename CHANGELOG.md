@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.0.1
+
+* **Bug Fix**
+  * Fixed <img> tag being detected as a link when using routeLinks
+
 ## 2.0.0
 
 * **New Feature**
