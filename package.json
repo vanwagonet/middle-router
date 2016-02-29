@@ -31,10 +31,10 @@
     "karma-firefox-launcher": "^0.1.7",
     "karma-mocha": "^0.2.1",
     "karma-sauce-launcher": "^0.3.0",
-    "karma-spec-reporter": "0.0.23",
+    "karma-spec-reporter": "0.0.24",
     "mocha": "^2.4.5",
     "power-assert": "^1.2.0",
-    "standard": "^5.3.1",
+    "standard": "^6.0.0",
     "synthetic-dom-events": "^0.3.0"
   },
   "scripts": {
