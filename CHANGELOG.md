@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.0.2
+
+* **Bug Fix**
+  * Fixed bad routing for `download`, `target`, and `rel` containing links.
+
 ## 2.0.1
 
 * **Bug Fix**
