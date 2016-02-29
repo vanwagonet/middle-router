@@ -3,11 +3,14 @@ import assert from 'power-assert'
 import Router from '../lib/router'
 import event from 'synthetic-dom-events'
 
-function clickTo (url, prevent) {
+function clickTo (url, prevent, attributes) {
   let link = document.body.appendChild(document.createElement('a'))
   link.href = url
   if (prevent) {
     link.addEventListener('click', evt => evt.preventDefault())
+  }
+  if (attributes) {
+    Object.keys(attributes).forEach(name => link.setAttribute(name, attributes[name]))
   }
   link.dispatchEvent(event('click', { bubbles: true, cancelable: true }))
   document.body.removeChild(link)
@@ -28,6 +31,63 @@ describe('Router#routeLinks', () => {
     await router.start()
 
     clickTo('/linked/location', true)
+    await router.routing
+
+    router.stop()
+    assert.equal(called, 0, 'matching route should not be called')
+  })
+
+  it('ignores links that have a target attribute', async () => {
+    let called = 0
+    let router = new Router({ routeLinks: true })
+      .use('/start', ({ resolve }) => resolve())
+      .use('/linked/:to', ({ params, resolve }) => {
+        ++called
+        assert.fail('should not route due to target attribute')
+      })
+
+    history.replaceState(null, document.title, '/start')
+    await router.start()
+
+    clickTo('#/linked/location', false, { target: '_self' })
+    await router.routing
+
+    router.stop()
+    assert.equal(called, 0, 'matching route should not be called')
+  })
+
+  it('ignores links that have a download attribute', async () => {
+    let called = 0
+    let router = new Router({ hash: '#', routeLinks: true })
+      .use('/start', ({ resolve, }) => resolve())
+      .use('/linked/:to', ({ params, resolve }) => {
+        ++called
+        assert.fail('should not route due to download attribute')
+      })
+
+    window.location.hash = '#/start'
+    await router.start()
+
+    clickTo('#/linked/location', false, { download: true })
+    await router.routing
+
+    router.stop()
+    assert.equal(called, 0, 'matching route should not be called')
+  })
+
+  it('ignores links that have a rel attribute', async () => {
+    let called = 0
+    let router = new Router({ routeLinks: true })
+      .use('/start', ({ resolve }) => resolve())
+      .use('/linked/:to', ({ params, resolve }) => {
+        ++called
+        assert.fail('should not route due to target attribute')
+      })
+
+    history.replaceState(null, document.title, '/start')
+    await router.start()
+
+    clickTo('#/linked/location', false, { rel: 'external' })
     await router.routing
 
     router.stop()
