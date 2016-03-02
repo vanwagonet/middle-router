@@ -17,83 +17,6 @@ function clickTo (url, prevent, attributes) {
 }
 
 describe('Router#routeLinks', () => {
-  it('ignores prevented link clicks', async () => {
-    let called = 0
-    let router = new Router({ routeLinks: true })
-      .use('/start', ({ resolve }) => resolve())
-      .use('/linked/:to', ({ params, resolve }) => {
-        ++called
-        assert.fail('should not route due to default prevented')
-        resolve()
-      })
-
-    history.replaceState(null, document.title, '/start')
-    await router.start()
-
-    clickTo('/linked/location', true)
-    await router.routing
-
-    router.stop()
-    assert.equal(called, 0, 'matching route should not be called')
-  })
-
-  it('ignores links that have a target attribute', async () => {
-    let called = 0
-    let router = new Router({ routeLinks: true })
-      .use('/start', ({ resolve }) => resolve())
-      .use('/linked/:to', ({ params, resolve }) => {
-        ++called
-        assert.fail('should not route due to target attribute')
-      })
-
-    history.replaceState(null, document.title, '/start')
-    await router.start()
-
-    clickTo('#/linked/location', false, { target: '_self' })
-    await router.routing
-
-    router.stop()
-    assert.equal(called, 0, 'matching route should not be called')
-  })
-
-  it('ignores links that have a download attribute', async () => {
-    let called = 0
-    let router = new Router({ hash: '#', routeLinks: true })
-      .use('/start', ({ resolve, }) => resolve())
-      .use('/linked/:to', ({ params, resolve }) => {
-        ++called
-        assert.fail('should not route due to download attribute')
-      })
-
-    window.location.hash = '#/start'
-    await router.start()
-
-    clickTo('#/linked/location', false, { download: true })
-    await router.routing
-
-    router.stop()
-    assert.equal(called, 0, 'matching route should not be called')
-  })
-
-  it('ignores links that have a rel attribute', async () => {
-    let called = 0
-    let router = new Router({ routeLinks: true })
-      .use('/start', ({ resolve }) => resolve())
-      .use('/linked/:to', ({ params, resolve }) => {
-        ++called
-        assert.fail('should not route due to target attribute')
-      })
-
-    history.replaceState(null, document.title, '/start')
-    await router.start()
-
-    clickTo('#/linked/location', false, { rel: 'external' })
-    await router.routing
-
-    router.stop()
-    assert.equal(called, 0, 'matching route should not be called')
-  })
-
   it('listens to link clicks if routeLinks is true', async () => {
     let called = 0
     let router = new Router({ routeLinks: true })
@@ -377,5 +300,110 @@ describe('Router#routeLinks', () => {
     assert.equal(called, 2, 'matching route should be called since confirmed')
     assert.equal(confirmCalled, 1, 'confirm should be called only once')
     assert.equal(beforeExitCalled, 1, 'beforeExit handler should be called only once')
+  })
+
+  it('ignores prevented link clicks', async () => {
+    let called = 0
+    let router = new Router({ routeLinks: true })
+      .use('/start', ({ resolve }) => resolve())
+      .use('/linked/:to', ({ params, resolve }) => {
+        ++called
+        assert.fail('should not route due to default prevented')
+        resolve()
+      })
+
+    history.replaceState(null, document.title, '/start')
+    await router.start()
+
+    clickTo('/linked/location', true)
+    await router.routing
+
+    router.stop()
+    assert.equal(called, 0, 'matching route should not be called')
+  })
+
+  it('ignores links that have a target attribute', async () => {
+    let called = 0
+    let clickCalled = 0
+    let router = new Router()
+      .use('/start', ({ resolve }) => resolve())
+      .use('/linked/:to', ({ params, resolve }) => {
+        ++called
+        assert.fail('should not route due to target attribute')
+      })
+
+    history.replaceState(null, document.title, '/start')
+    await router.start()
+
+    // runs after router's listener
+    window.addEventListener('click', function checkClick (event) {
+      ++clickCalled
+      event.preventDefault()
+      window.removeEventListener('click', checkClick, false)
+    }, false)
+
+    clickTo('/linked/location', false, { target: '_blank' })
+    await router.routing
+    await new Promise(r => setTimeout(r, 10))
+
+    router.stop()
+    assert.equal(called, 0, 'matching route should not be called')
+    assert.equal(clickCalled, 1, 'browser handler should be called')
+  })
+
+  it('ignores links that have a download attribute', async () => {
+    let called = 0
+    let clickCalled = 0
+    let router = new Router({ hash: '#', routeLinks: true })
+      .use('/start', ({ resolve, }) => resolve())
+      .use('/linked/:to', ({ params, resolve }) => {
+        ++called
+        assert.fail('should not route due to download attribute')
+      })
+
+    history.replaceState(null, document.title, '#/start')
+    await router.start()
+
+    // runs after router's listener
+    window.addEventListener('click', function checkClick (event) {
+      ++clickCalled
+      event.preventDefault()
+      window.removeEventListener('click', checkClick, false)
+    }, false)
+
+    clickTo('#/linked/location', false, { download: true })
+    await router.routing
+
+    router.stop()
+    assert.equal(called, 0, 'matching route should not be called')
+    assert.equal(clickCalled, 1, 'browser handler should be called')
+  })
+
+  it('ignores links that have a rel attribute', async () => {
+    let called = 0
+    let clickCalled = 0
+    let router = new Router({ hash: '#', routeLinks: true })
+      .use('/start', ({ resolve }) => resolve())
+      .use('/linked/:to', ({ params, resolve }) => {
+        ++called
+        assert.fail('should not route due to target attribute')
+      })
+
+    history.replaceState(null, document.title, '#/start')
+    await router.start()
+
+    // runs after router's listener
+    window.addEventListener('click', function checkClick (event) {
+      ++clickCalled
+      event.preventDefault()
+      window.removeEventListener('click', checkClick, false)
+    }, false)
+
+    clickTo('#/linked/location', false, { rel: 'external' })
+    await router.routing
+
+    router.stop()
+    assert.equal(called, 0, 'matching route should not be called')
+    assert.equal(clickCalled, 1, 'browser handler should be called')
   })
 })

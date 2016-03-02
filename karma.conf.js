@@ -3,34 +3,47 @@
 
 module.exports = function(config) {
   var customLaunchers = {
-/*
-    sl_safari_8: {
-      base: 'SauceLabs',
-      browserName: 'safari',
-      version: '8'
+    bs_safari_8: {
+      base: 'BrowserStack',
+      os: 'OS X',
+      os_version: 'Yosemite',
+      browser: 'safari',
+      browser_version: '8.0'
     },
-    sl_safari_9: {
-      base: 'SauceLabs',
-      browserName: 'safari',
-      version: '9'
+    bs_safari_9: {
+      base: 'BrowserStack',
+      os: 'OS X',
+      os_version: 'El Capitan',
+      browser: 'safari',
+      browser_version: '9.0'
     },
-*/
-    sl_chrome: {
-      base: 'SauceLabs',
-      browserName: 'chrome'
+    bs_chrome: {
+      base: 'BrowserStack',
+      os: 'Windows',
+      os_version: '10',
+      browser: 'chrome',
+      browser_version: '48.0'
     },
-    sl_firefox: {
-      base: 'SauceLabs',
-      browserName: 'firefox'
+    bs_firefox: {
+      base: 'BrowserStack',
+      os: 'Windows',
+      os_version: '10',
+      browser: 'firefox',
+      browser_version: '44.0'
     },
-    sl_ie_11: {
-      base: 'SauceLabs',
-      browserName: 'internet explorer',
-      version: '11'
+    bs_ie_11: {
+      base: 'BrowserStack',
+      os: 'Windows',
+      os_version: '10',
+      browser: 'ie',
+      browser_version: '11.0'
     },
-    sl_edge: {
-      base: 'SauceLabs',
-      browserName: 'microsoftedge'
+    bs_edge: {
+      base: 'BrowserStack',
+      os: 'Windows',
+      os_version: '10',
+      browser: 'edge',
+      browser_version: '13.0'
     }
   }
 
@@ -87,8 +100,8 @@ module.exports = function(config) {
       : [ 'Firefox' ],
 
     customLaunchers: customLaunchers,
-    sauceLabs: {
-      testName: 'middle-router'
+    browserStack: {
+      project: 'middle-router'
     },
     captureTimeout: 120000,
     browserNoActivityTimeout: 60000,
