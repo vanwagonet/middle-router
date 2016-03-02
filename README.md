@@ -325,6 +325,12 @@ Async Middleware
 middle-router can work with any promised-based async middleware, but it was designed specifically for async functions. Inspired by [koa][koa]'s `yield next`, middle-router allows you to `await next()` so you can `next()` "downstream" and the `await` for control to flow back "upstream".
 
 
+Thanks
+------
+
+Thanks to [BrowserStack](https://www.browserstack.com/) for providing the infrastructure to run builds in real browsers.
+
+
 License
 -------
 
