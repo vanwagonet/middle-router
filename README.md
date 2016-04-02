@@ -337,7 +337,7 @@ License
 This software is free to use under the MIT license. See the [LICENSE-MIT file][LICENSE] for license text and copyright information.
 
 
-[logo]: https://cdn.rawgit.com/thetalecrafter/middle-router/5f651c2/logo.svg
+[logo]: https://cdn.rawgit.com/thetalecrafter/middle-router/f15320d/logo.svg
 [npm]: https://www.npmjs.org/package/middle-router
 [npm-image]: https://img.shields.io/npm/v/middle-router.svg
 [build]: https://travis-ci.org/thetalecrafter/middle-router
