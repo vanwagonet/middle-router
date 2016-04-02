@@ -1,4 +1,4 @@
-# ![middle-router][logo] <br/> middle-router
+# ![middle-router][logo]
 
 > Route urls on both client and server through middleware functions.
 
@@ -337,7 +337,7 @@ License
 This software is free to use under the MIT license. See the [LICENSE-MIT file][LICENSE] for license text and copyright information.
 
 
-[logo]: https://cdn.rawgit.com/thetalecrafter/middle-router/612c9e9/logo.svg
+[logo]: https://cdn.rawgit.com/thetalecrafter/middle-router/5f651c2/logo.svg
 [npm]: https://www.npmjs.org/package/middle-router
 [npm-image]: https://img.shields.io/npm/v/middle-router.svg
 [build]: https://travis-ci.org/thetalecrafter/middle-router
