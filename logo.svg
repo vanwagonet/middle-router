@@ -1,14 +1,13 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="256" height="96" viewBox="0 0 256 96">
   <path
     fill="#10762E"
-    d="M17.916,11.605h27.348V2.697h10.475v8.908h32.035v22.621H17.916
-      L6.172,22.912L17.916,11.605z M55.08,97.303H44.596V73.057 H55.08V97.303z
-      M82.094,68.117H12.227V45.496H44.93v-6.908h10.484v6.908h26.68l11.734,11.306
-      L82.094,68.117z"
+    d="M18,10 h27 v-8 h10 v8 h32 v24 h-69 l-12,-12 z
+      M82,68 h-69 v-24 h32 v-8 h10 v8 h27 l12,12 z
+      M45,70 h10 v24 h-10 z"
   />
   <text
     font-family="Helvetica Neue, Segoe UI, Arial, freesans, sans-serif"
-    font-size="42"
+    font-size="44"
     font-weight="bold"
     fill="#333"
   >
