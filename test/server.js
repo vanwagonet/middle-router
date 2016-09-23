@@ -45,6 +45,25 @@ describe('Router', () => {
     })
   })
 
+  describe('#lazy', () => {
+    it('returns the router', async () => {
+      let router = new Router()
+      assert.equal(router.lazy(), router, 'use should return the router')
+    })
+
+    it('adds the callback to the middleware', async () => {
+      let router = new Router()
+        .lazy(() => {})
+      assert.equal(router.middleware.length, 1, 'should have a middleware for the callback')
+    })
+
+    it('accepts a path as the first arg', async () => {
+      let router = new Router()
+        .lazy('/form', () => {})
+      assert.equal(router.middleware.length, 1, 'should have a middleware for the callback')
+    })
+  })
+
   describe('#route', () => {
     it('returns a promise', async () => {
       let router = new Router().use('/', ({ resolve }) => { resolve() })
@@ -177,6 +196,46 @@ describe('Router', () => {
         }))
       await router.route('/')
       assert.equal(called, 3, 'matching routes should be called')
+    })
+
+    it('routes can be lazy', async () => {
+      let called = 0
+      let router = Router()
+        .lazy('/lazy', () => {
+          assert.equal(++called, 1, 'lazy matching route should happen first')
+          return Promise.resolve(({ resolve }) => {
+            ++called
+            resolve('jit ftw')
+          })
+        })
+        .use('/lazy', () => {
+          assert.fail('should never get here')
+        })
+      assert.equal(await router.route('/lazy'), 'jit ftw')
+      assert.equal(called, 2, 'matching routes should be called')
+
+      assert.equal(await router.route('/lazy'), 'jit ftw')
+      assert.equal(called, 3, 'wrapper should not be called after loaded')
+    })
+
+    it('lazy routes can resolve to routers', async () => {
+      let called = 0
+      let router = Router()
+        .lazy('/lazy', () => {
+          assert.equal(++called, 1, 'lazy matching route should happen first')
+          return Promise.resolve(Router().use(({ resolve }) => {
+            ++called
+            resolve('jit ftw')
+          }))
+        })
+        .use('/lazy', () => {
+          assert.fail('should never get here')
+        })
+      assert.equal(await router.route('/lazy'), 'jit ftw')
+      assert.equal(called, 2, 'matching routes should be called')
+
+      assert.equal(await router.route('/lazy'), 'jit ftw')
+      assert.equal(called, 3, 'wrapper should not be called after loaded')
     })
   })
 })
