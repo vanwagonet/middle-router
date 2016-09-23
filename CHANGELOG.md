@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.1.0
+
+* **New Feature**
+  * Added `lazy` for defining a route handler to be loaded on demand
+
 ## 2.0.2
 
 * **Bug Fix**
