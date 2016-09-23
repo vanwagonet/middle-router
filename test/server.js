@@ -231,10 +231,10 @@ describe('Router', () => {
         .use('/lazy', () => {
           assert.fail('should never get here')
         })
-      assert.equal(await router.route('/lazy'), 'jit ftw')
+      assert.equal(await router.route('/lazy/123'), 'jit ftw')
       assert.equal(called, 2, 'matching routes should be called')
 
-      assert.equal(await router.route('/lazy'), 'jit ftw')
+      assert.equal(await router.route('/lazy/123'), 'jit ftw')
       assert.equal(called, 3, 'wrapper should not be called after loaded')
     })
   })

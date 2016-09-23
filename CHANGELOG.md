@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.1.1
+
+* **Bug Fix**
+  * Make `lazy` always match just like routers
+
 ## 2.1.0
 
 * **New Feature**
