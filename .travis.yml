@@ -6,8 +6,7 @@ addons:
   firefox: latest
 language: node_js
 node_js:
-- '0.12'
-- '4'
+- lts/*
 - stable
 env:
   global:

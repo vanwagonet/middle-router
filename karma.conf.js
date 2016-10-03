@@ -3,19 +3,19 @@
 
 module.exports = function(config) {
   var customLaunchers = {
-    bs_safari_8: {
-      base: 'BrowserStack',
-      os: 'OS X',
-      os_version: 'Yosemite',
-      browser: 'safari',
-      browser_version: '8.0'
-    },
     bs_safari_9: {
       base: 'BrowserStack',
       os: 'OS X',
       os_version: 'El Capitan',
       browser: 'safari',
       browser_version: '9.0'
+    },
+    bs_safari_10: {
+      base: 'BrowserStack',
+      os: 'OS X',
+      os_version: 'Sierra',
+      browser: 'safari',
+      browser_version: '10.0'
     },
     bs_chrome: {
       base: 'BrowserStack',
@@ -104,7 +104,7 @@ module.exports = function(config) {
       project: 'middle-router'
     },
     captureTimeout: 120000,
-    browserNoActivityTimeout: 60000,
+    browserNoActivityTimeout: 120000,
 
     // Continuous Integration mode
     // if true, Karma captures browsers, runs the tests and exits
