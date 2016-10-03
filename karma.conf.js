@@ -22,14 +22,14 @@ module.exports = function(config) {
       os: 'Windows',
       os_version: '10',
       browser: 'chrome',
-      browser_version: '48.0'
+      browser_version: '53.0'
     },
     bs_firefox: {
       base: 'BrowserStack',
       os: 'Windows',
       os_version: '10',
       browser: 'firefox',
-      browser_version: '44.0'
+      browser_version: '48.0'
     },
     bs_ie_11: {
       base: 'BrowserStack',
@@ -43,7 +43,7 @@ module.exports = function(config) {
       os: 'Windows',
       os_version: '10',
       browser: 'edge',
-      browser_version: '13.0'
+      browser_version: '14.0'
     }
   }
 
