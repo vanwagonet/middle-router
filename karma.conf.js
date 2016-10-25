@@ -3,6 +3,7 @@
 
 module.exports = function(config) {
   var customLaunchers = {
+/* Disable Safari since it is flakey on BrowserStack
     bs_safari_9: {
       base: 'BrowserStack',
       os: 'OS X',
@@ -17,6 +18,7 @@ module.exports = function(config) {
       browser: 'safari',
       browser_version: '10.0'
     },
+*/
     bs_chrome: {
       base: 'BrowserStack',
       os: 'Windows',
