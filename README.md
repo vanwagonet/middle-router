@@ -1,5 +1,7 @@
 # ![middle-router][logo]
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/thetalecrafter/middle-router.svg)](https://greenkeeper.io/)
+
 [![MIT License][license-image]][LICENSE]
 [![JS Standard Style][style-image]][style]
 [![npm Version][npm-image]][npm]
