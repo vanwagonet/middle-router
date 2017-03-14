@@ -1,11 +1,11 @@
 # ![middle-router][logo]
 
+[![npm Version][npm-image]][npm]
 [![Greenkeeper badge](https://badges.greenkeeper.io/thetalecrafter/middle-router.svg)](https://greenkeeper.io/)
+[![Build Status][build-image]][build]
 
 [![MIT License][license-image]][LICENSE]
 [![JS Standard Style][style-image]][style]
-[![npm Version][npm-image]][npm]
-[![Build Status][build-image]][build]
 
 _Route urls through middleware functions on both client and server._
 
@@ -91,12 +91,6 @@ Async Middleware
 ----------------
 
 middle-router can work with any promised-based async middleware, but it was designed specifically for async functions. Inspired by [koa][koa]'s `yield next`, middle-router allows you to `await next()` so you can `next()` "downstream" and the `await` for control to flow back "upstream".
-
-
-Thanks
-------
-
-Thanks to [BrowserStack](https://www.browserstack.com/) for providing the infrastructure to run builds in real browsers.
 
 
 License

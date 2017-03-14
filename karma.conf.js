@@ -1,54 +1,7 @@
 // Karma configuration
 // Generated on Mon Oct 26 2015 15:08:26 GMT-0600 (MDT)
 
-module.exports = function(config) {
-  var customLaunchers = {
-/* Disable Safari since it is flakey on BrowserStack
-    bs_safari_9: {
-      base: 'BrowserStack',
-      os: 'OS X',
-      os_version: 'El Capitan',
-      browser: 'safari',
-      browser_version: '9.0'
-    },
-    bs_safari_10: {
-      base: 'BrowserStack',
-      os: 'OS X',
-      os_version: 'Sierra',
-      browser: 'safari',
-      browser_version: '10.0'
-    },
-*/
-    bs_chrome: {
-      base: 'BrowserStack',
-      os: 'Windows',
-      os_version: '10',
-      browser: 'chrome',
-      browser_version: '53.0'
-    },
-    bs_firefox: {
-      base: 'BrowserStack',
-      os: 'Windows',
-      os_version: '10',
-      browser: 'firefox',
-      browser_version: '48.0'
-    },
-    bs_ie_11: {
-      base: 'BrowserStack',
-      os: 'Windows',
-      os_version: '10',
-      browser: 'ie',
-      browser_version: '11.0'
-    },
-    bs_edge: {
-      base: 'BrowserStack',
-      os: 'Windows',
-      os_version: '10',
-      browser: 'edge',
-      browser_version: '14.0'
-    }
-  }
-
+module.exports = function (config) {
   config.set({
 
     // base path that will be used to resolve all patterns (eg. files, exclude)
@@ -97,14 +50,8 @@ module.exports = function(config) {
 
     // start these browsers
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-    browsers: process.env.CONTINUOUS_INTEGRATION && process.env.TRAVIS_NODE_VERSION === 'stable'
-      ? Object.keys(customLaunchers)
-      : [ 'Firefox' ],
+    browsers: [ 'Firefox' ],
 
-    customLaunchers: customLaunchers,
-    browserStack: {
-      project: 'middle-router'
-    },
     captureTimeout: 120000,
     browserNoActivityTimeout: 120000,
 
