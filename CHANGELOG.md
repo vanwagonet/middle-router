@@ -1,5 +1,14 @@
 # Changelog
 
+## 2.2.0
+
+* **New Feature**
+  * Added `context` option to `Router` to use in middleware instead of always starting with `{}`
+* **Polish**
+  * Removed console.error when nothing matches
+* **Bug Fix**
+  * npmignore the .babelrc file used internally for tests
+
 ## 2.1.1
 
 * **Bug Fix**

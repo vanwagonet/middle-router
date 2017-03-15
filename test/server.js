@@ -6,7 +6,7 @@ import Router from '../lib/router'
 import './arguments'
 
 function sleep (time) {
-  return new Promise(r => setTimeout(r, time))
+  return new Promise(resolve => setTimeout(resolve, time))
 }
 
 describe('Router', () => {
@@ -74,19 +74,6 @@ describe('Router', () => {
       assert.equal(router.routing, null, 'routing should be null after finished')
     })
 
-    it('logs an error if no route matches', async () => {
-      let router = new Router()
-      let error = console.error
-      let called
-      console.error = function (err) {
-        assert.equal(err, 'no route matches /', 'should match the no route found error')
-        called = true
-      }
-      await router.route('/')
-      assert.equal(called, true, 'console.error should be called on unhandled route')
-      console.error = error
-    })
-
     it('routes through the matching middleware', async () => {
       let called = 0
       let router = new Router()
@@ -118,13 +105,13 @@ describe('Router', () => {
       assert.equal(called, 1, 'matching route should be called')
     })
 
-    it('passes the state in the context', async () => {
+    it('passes the state in the arguments', async () => {
       let called = 0
       let ostate = { foo: 'bar' }
       let router = new Router()
         .use('/foo/:bar', ({ state, resolve }) => {
           ++called
-          assert.equal(state, ostate, 'state should be unaltered in the context')
+          assert.equal(state, ostate, 'state should be unaltered in the arguments')
           resolve()
         })
       await router.route('/foo/bar', ostate)

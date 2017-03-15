@@ -63,4 +63,23 @@ describe('Route middleware arguments', () => {
       })
     await router.route('/')
   })
+
+  it('has a context object', async () => {
+    let router = Router()
+      .use(({ context, resolve }) => {
+        assert.equal(typeof context, 'object', 'context must be an object by default')
+        resolve()
+      })
+    await router.route('/')
+  })
+
+  it('uses context passed to Router', async () => {
+    let example = { a: 'b' }
+    let router = Router({ context: example })
+      .use(({ context, resolve }) => {
+        assert.equal(context, example, 'context must be the object passed into Router')
+        resolve()
+      })
+    await router.route('/')
+  })
 })
