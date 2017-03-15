@@ -1,28 +1,8 @@
-# ignore system files
-
-# OS X
-.DS_Store
-.Spotlight-V100
-.Trashes
-._*
-
-# Win
-Thumbs.db
-Desktop.ini
-
-# vim
-*~
-.swp
-.*.sw[a-z]
-Session.vim
-
-# Node
-node_modules
-
-# non-distribution files
-coverage
-test
+.babelrc
 .travis.yml
+CODE_OF_CONDUCT.md
+CONTRIBUTING.md
+coverage
 karma.conf.js
-webpack.config.js
-
+logo.svg
+test
