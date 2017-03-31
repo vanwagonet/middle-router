@@ -26,6 +26,8 @@
     "babel-runtime": "^6.6.1",
     "babelify": "^7.2.0",
     "browserify": "^14.0.0",
+    "jsdom": "9.12.0",
+    "jsdom-global": "2.1.1",
     "karma": "^1.3.0",
     "karma-browserify": "^5.1.0",
     "karma-firefox-launcher": "^1.0.0",
@@ -38,9 +40,10 @@
   },
   "scripts": {
     "lint": "standard lib/**/*.js",
-    "test": "npm run lint && npm run test-server && npm run test-client",
+    "test": "npm run lint && npm run test-server && npm run test-client && npm run test-jsdom",
     "test-server": "mocha -r babel-register test/server.js",
-    "test-client": "karma start"
+    "test-client": "karma start",
+    "test-jsdom": "mocha -r babel-register -r jsdom.conf.js -r babel-polyfill test/client.js"
   },
   "repository": {
     "type": "git",
