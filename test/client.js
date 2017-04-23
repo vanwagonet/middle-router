@@ -107,7 +107,7 @@ describe('Router#start using hash', () => {
       })
       .use('/hash', Router().use(({ path, location, resolve }) => {
         assert.equal(path, '/route', 'path is relative to mount point')
-        assert.equal(location.hash, '', 'hash is empty')
+        assert.equal(location.hash, null, 'hash is empty')
         resolve()
       }))
     history.replaceState(null, document.title, '/path#$!/hash/route')
