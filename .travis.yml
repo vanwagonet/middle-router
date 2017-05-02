@@ -1,14 +1,17 @@
+dist: trusty
+sudo: required
+language: node_js
+node_js:
+- lts/*
+- stable
 before_script:
 - export DISPLAY=:99.0
 - sh -e /etc/init.d/xvfb start
 - sleep 3
 addons:
   firefox: latest
-language: node_js
-node_js:
-- lts/*
-- stable
-env:
-  global:
-  - secure: GiBD/tq1GN5dkTbmwt5jdjrJNMVv/a5tZdPRgKTWDCJ6uC7dAo8oQzmFQi0wP69rgD49uF+BGHFHsM6Hn8l4FGhlAT+OwNVqxFQhDBQkeyTi8f1vHrXmq7N/MXR66LxzF0oyoyNKhI5EP+QiGEhy0p4c4DWyLLko9HS/k32RDv0T65TlHYQ7LkqQmNKyVRfgTgIe5sHIG9VjSU5iv3zK4i8WEM8yX6dWLD7UB6fygoppTutSE/NY9fRURIa6afOd4m2w1Z6FsYO8ZD+r5ZT5qacIwuhMprLPwyk9qK3nTCk/HhZbAaZMnNfdOX10HzCCcATLUekUXNAgFt5aWFfpwXJcZ8OZxsC0rXbUlZtB6S1C9eIUg5qW3TmQT0mORH8OBmyeqNLx4hGpfD4jtV1D+o1UpChBaQnVVmcgsd09tQsK2Px2AHo/XMnsj94RmNfiR4q3K0O0lGFel7eRmPeEnoFTN85RqorltN/1Dkb/17INvBne5T6XfjAC0X0YdB9ar/pz/oXDOU47HIU6Jh8vIL5dCO2DMuv7CL1yIKpTso7d12rl1VXxkIHj77HWTbaBeH46oSNOB/CDO9lUb/pi6OOhMqVZaGLCxIMaHPWBbdwdUuWa3xcmNgnSLipENkyhVAN+LS1IBJ16raGG66YoXvGUEZUpNP+17od9wzgweeY=
-  - secure: NnLGx+PfT1C5Ya1Fyx2ZpdiTSM2U/1Vm7wgLeFF07niIDq/yjcrcT2Hkwe+n/qtT+PbgI0sPqyMPhjKyEX8CW1rdjefZzV9a3kUQEGkUJe6UAmZkja2TukHgzH5iKKhXXwFFm+lF7ehDMlfadBYUukcJydXeI+yuvcTz6CnAJbRG465l9XUF7MHfovVEqiCDzgHxjMd3wpVRsnJm8n2Esf/r5ui6I2mPhJ6vp2y40XP7HGlwzH2BJagDPcwR6GnX2baRRFGSQ8evI8wblvJ9HwEHqPTDISwxhoAPN4GUPLx5adIP+ZhdnuEla5DQjLkvIZmWKh/NVT6DNeaijNEnDdtWSackZ2DPkw0upBkAJ4nk8aWvCC7G86uqztEiNl4+UzroyYR9NE+59/wgEn8zkw70HW6+Ey3NE+rggJaDRqXfmdiz2qFNKdoX0xguLtjYGcraHLrYA+e7k7zAPSbvpwHXEvszLZ89O7QJ1wKA0nuELjxW8Rl1iuC7jtHR9UbMyYNjOjXPne0KJ8mrxEtCIOtklPrBI6g9IuzCrh9yJuSBWiiZDcvXQwNKyZEnN4Jv59w53mG5UZWMxQNCcqHGlR6BdRKMRLUUB/Qlhpi5GO6LGmDW+WWxe5Qp3znUvHfA2nh0aJ89b+3XdCnZTo/MB/YJnUiTfmIDjvQzS7fziWc=
+  apt:
+    sources:
+      - google-chrome
+    packages:
+      - google-chrome-stable
