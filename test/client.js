@@ -143,3 +143,21 @@ describe('Route middleware arguments on client', () => {
     assert.equal(stage, 'after', 'after next route, exiting must be resolved')
   })
 })
+
+describe('Trying to navigate without listening first', () => {
+  it('throws when navigate is called', () => {
+    assert.throws(() => Router().navigate(), 'should throw when trying to navigate')
+  })
+
+  it('throws when replace is called', () => {
+    assert.throws(() => Router().replace(), 'should throw when trying to replace')
+  })
+
+  it('throws when back is called', () => {
+    assert.throws(() => Router().back(), 'should throw when trying to go back')
+  })
+
+  it('throws when forward is called', () => {
+    assert.throws(() => Router().forward(), 'should throw when trying to go forward')
+  })
+})
