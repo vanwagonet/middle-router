@@ -225,4 +225,22 @@ describe('Router', () => {
       assert.equal(called, 3, 'wrapper should not be called after loaded')
     })
   })
+
+  if (typeof window === 'undefined') {
+    describe('#start', () => {
+      it('cannot listen without a window object', () => {
+        let router = Router()
+        assert.throws(() => router.start(), 'start should throw without a window')
+        assert.equal(router.isListening, false, 'isListening should still be false')
+      })
+    })
+
+    describe('#stop', () => {
+      it('is a no op since you cannot start', () => {
+        let router = Router()
+        router.stop()
+        assert.equal(router.isListening, false, 'isListening should still be false')
+      })
+    })
+  }
 })
