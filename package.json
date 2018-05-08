@@ -47,15 +47,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "http://github.com/thetalecrafter/middle-router.git"
+    "url": "http://github.com/vanwagonet/middle-router.git"
   },
   "author": {
     "name": "Andy VanWagoner",
-    "email": "thetalecrafter@gmail.com"
+    "email": "andy@vanwago.net"
   },
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/thetalecrafter/middle-router/issues"
+    "url": "https://github.com/vanwagonet/middle-router/issues"
   },
-  "homepage": "https://github.com/thetalecrafter/middle-router"
+  "homepage": "https://github.com/vanwagonet/middle-router"
 }
