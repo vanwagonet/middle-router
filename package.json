@@ -27,7 +27,7 @@
     "babelify": "^8.0.0",
     "browserify": "^16.0.0",
     "jsdom": "^11.10.0",
-    "karma": "^2.0.0",
+    "karma": "^3.0.0",
     "karma-browserify": "^5.1.0",
     "karma-chrome-launcher": "^2.0.0",
     "karma-firefox-launcher": "^1.0.0",
