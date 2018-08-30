@@ -1,7 +1,7 @@
 # ![middle-router][logo]
 
 [![npm Version][npm-image]][npm]
-[![Greenkeeper badge](https://badges.greenkeeper.io/thetalecrafter/middle-router.svg)](https://greenkeeper.io/)
+[![Greenkeeper badge](https://badges.greenkeeper.io/vanwagonet/middle-router.svg)](https://greenkeeper.io/)
 [![Build Status][build-image]][build]
 
 [![MIT License][license-image]][LICENSE]
@@ -99,16 +99,16 @@ License
 This software is free to use under the MIT license. See the [LICENSE-MIT file][LICENSE] for license text and copyright information.
 
 
-[logo]: https://cdn.rawgit.com/thetalecrafter/middle-router/f15320d/logo.svg
+[logo]: https://cdn.rawgit.com/vanwagonet/middle-router/f15320d/logo.svg
 [npm]: https://www.npmjs.org/package/middle-router
 [npm-image]: https://img.shields.io/npm/v/middle-router.svg
-[build]: https://travis-ci.org/thetalecrafter/middle-router
-[build-image]: https://img.shields.io/travis/thetalecrafter/middle-router.svg
+[build]: https://travis-ci.org/vanwagonet/middle-router
+[build-image]: https://img.shields.io/travis/vanwagonet/middle-router.svg
 [style]: https://github.com/feross/standard
 [style-image]: https://img.shields.io/badge/code%20style-standard-brightgreen.svg
 [license-image]: https://img.shields.io/npm/l/middle-router.svg
 [path-to-regexp]: https://github.com/pillarjs/path-to-regexp
-[middle-run]: https://github.com/thetalecrafter/middle-run
-[wiki]: https://github.com/thetalecrafter/middle-router/wiki/api
+[middle-run]: https://github.com/vanwagonet/middle-run
+[wiki]: https://github.com/vanwagonet/middle-router/wiki/api
 [koa]: http://koajs.com
-[LICENSE]: https://github.com/thetalecrafter/middle-router/blob/master/LICENSE-MIT
+[LICENSE]: https://github.com/vanwagonet/middle-router/blob/master/LICENSE-MIT
