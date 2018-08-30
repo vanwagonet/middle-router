@@ -16,15 +16,6 @@
     "path-to-regexp": "^2.0.0"
   },
   "devDependencies": {
-    "babel-core": "^6.7.4",
-    "babel-plugin-espower": "^3.0.0",
-    "babel-plugin-transform-runtime": "^6.9.0",
-    "babel-polyfill": "^6.9.1",
-    "babel-preset-es2015": "^6.6.0",
-    "babel-preset-stage-2": "^6.11.0",
-    "babel-register": "^6.14.0",
-    "babel-runtime": "^6.6.1",
-    "babelify": "^8.0.0",
     "browserify": "^16.0.0",
     "jsdom": "^12.0.0",
     "karma": "^3.0.0",
@@ -32,18 +23,18 @@
     "karma-chrome-launcher": "^2.0.0",
     "karma-firefox-launcher": "^1.0.0",
     "karma-mocha": "^1.2.0",
+    "karma-safari-launcher": "^1.0.0",
     "karma-spec-reporter": "^0.0.32",
     "mocha": "^5.0.0",
-    "power-assert": "^1.3.1",
     "standard": "^12.0.0",
     "synthetic-dom-events": "^0.3.0"
   },
   "scripts": {
     "lint": "standard lib/**/*.js",
     "test": "npm run lint && npm run test-server && npm run test-client && npm run test-jsdom",
-    "test-server": "mocha -r babel-register test/server.js",
+    "test-server": "mocha lib/__tests__/server.test.js",
     "test-client": "karma start",
-    "test-jsdom": "mocha -r babel-register -r jsdom.conf.js -r babel-polyfill test/client.js"
+    "test-jsdom": "mocha -r jsdom.conf.js lib/__tests__/client.test.js"
   },
   "repository": {
     "type": "git",

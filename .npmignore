@@ -5,4 +5,4 @@ CONTRIBUTING.md
 coverage
 karma.conf.js
 logo.svg
-test
+__tests__
