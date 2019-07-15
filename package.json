@@ -20,7 +20,7 @@
     "jsdom": "^15.0.0",
     "karma": "^4.0.0",
     "karma-browserify": "^6.0.0",
-    "karma-chrome-launcher": "^2.0.0",
+    "karma-chrome-launcher": "^3.0.0",
     "karma-firefox-launcher": "^1.0.0",
     "karma-mocha": "^1.2.0",
     "karma-safari-launcher": "^1.0.0",
